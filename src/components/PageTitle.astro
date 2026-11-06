@@ -1,0 +1,31 @@
+---
+// Wraps Starlight's title and adds an owner / last-verified bar, so readers
+// can tell how far to trust a page.
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+
+const { entry } = Astro.locals.starlightRoute;
+const { owner, lastVerified, reviewEvery, template } = entry.data;
+const showMeta = template !== 'splash';
+
+const DAY = 24 * 60 * 60 * 1000;
+const ageDays = lastVerified ? Math.floor((Date.now() - lastVerified.getTime()) / DAY) : null;
+const state = ageDays === null ? 'unverified' : ageDays > reviewEvery ? 'stale' : 'fresh';
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Default />
+{
+	showMeta && (
+		<div class={`page-meta page-meta--${state}`}>
+			<span>
+				<strong>Owner:</strong> {owner ?? 'unassigned'}
+			</span>
+			<span>
+				<strong>Last verified:</strong>{' '}
+				{lastVerified ? `${fmt(lastVerified)} (${ageDays} days ago)` : 'never'}
+			</span>
+			{state === 'stale' && <span class="page-meta__flag">Stale. Check this page before you rely on it.</span>}
+			{state === 'unverified' && <span class="page-meta__flag">Not verified yet. Treat it as a draft.</span>}
+		</div>
+	)
+}

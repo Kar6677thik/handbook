@@ -1,0 +1,28 @@
+/* Keep it plain: readable width, clear metadata, nothing decorative. */
+:root {
+	--sl-content-width: 50rem;
+}
+
+.page-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 1.25rem;
+	margin-top: 0.75rem;
+	padding: 0.5rem 0.75rem;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+	border-inline-start: 3px solid var(--sl-color-gray-5);
+	background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+	border-radius: 0.25rem;
+}
+.page-meta--fresh { border-inline-start-color: var(--sl-color-green); }
+.page-meta--stale { border-inline-start-color: var(--sl-color-orange); }
+.page-meta--unverified { border-inline-start-color: var(--sl-color-gray-4); }
+.page-meta__flag { font-weight: 600; color: var(--sl-color-white); }
+
+/* Commands are the most-copied thing on the site; make them stand out. */
+.sl-markdown-content pre { font-size: 0.875rem; }
+
+@media print {
+	.page-meta { border: 1px solid #999; background: none; }
+}
