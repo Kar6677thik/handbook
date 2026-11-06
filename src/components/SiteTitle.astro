@@ -1,0 +1,30 @@
+---
+// Wordmark: a small binder divider (ink page, mint tab) beside the name.
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="site-title sl-flex">
+	<svg class="site-title__mark" viewBox="0 0 32 32" aria-hidden="true">
+		<path d="M4 30V10h6V6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v4h4v20z" fill="currentColor"></path>
+		<path d="M13 10V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3z" fill="#a1ffcb"></path>
+	</svg>
+	<span translate="no">{siteTitle}</span>
+</a>
+
+<style>
+	.site-title {
+		align-items: center;
+		text-decoration: none;
+		white-space: nowrap;
+		min-width: 0;
+	}
+	.site-title__mark {
+		width: 1.6rem;
+		height: 1.6rem;
+		flex: none;
+		transition: transform var(--t-ui) var(--ease-out);
+	}
+	.site-title:hover .site-title__mark {
+		transform: translateY(-2px);
+	}
+</style>

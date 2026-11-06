@@ -1,0 +1,51 @@
+---
+// The band that splits the page: what to do when something is broken.
+// Mirrors start-here/if-something-is-broken.md, which stays the source of truth.
+import { Image } from 'astro:assets';
+import switchboard from '../../assets/archive/switchboard-1950.jpg';
+
+const routes = [
+	{ when: 'A whole service is down or erroring', href: '/runbooks/service-is-down/', to: 'Service is down' },
+	{ when: 'Something changed just before it broke', href: '/operations/deployment/#rollback', to: 'Roll back the deploy' },
+	{ when: 'Data is lost or corrupted', href: '/operations/backups-and-restore/', to: 'Backups & restore' },
+	{ when: 'A whole provider or machine is gone', href: '/operations/disaster-recovery/', to: 'Disaster recovery' },
+	{ when: 'You are stuck', href: '/reference/contacts/', to: 'Who to call' },
+];
+---
+
+<section class="hb-broken not-content" aria-labelledby="hb-broken-title">
+	<div class="hb-broken__inner" data-reveal>
+		<div class="hb-broken__text">
+			<h2 id="hb-broken-title" class="hb-h2">Something is broken?</h2>
+			<p class="hb-broken__lede">
+				Confirm it really is broken, tell people what you're looking at, then follow the runbook that matches. Escalate early; nobody
+				will blame you for asking.
+			</p>
+			<a class="hb-btn hb-btn--mint" href="/start-here/if-something-is-broken/">Open the first-response steps</a>
+		</div>
+
+		<ul class="hb-routes">
+			{
+				routes.map((r) => (
+					<li>
+						<a class="hb-route" href={r.href}>
+							<span class="hb-route__when">{r.when}</span>
+							<span class="hb-route__to">{r.to}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+
+		<figure class="hb-photo hb-broken__photo">
+			<figcaption class="hb-photo__tab">Switchboard operators, 1950</figcaption>
+			<Image
+				src={switchboard}
+				alt="Three telephone operators at a switchboard, patching calls by hand, with cards of instructions pinned above them"
+				widths={[480, 800, 1200]}
+				sizes="(min-width: 72rem) 30vw, 90vw"
+				loading="lazy"
+			/>
+		</figure>
+	</div>
+</section>

@@ -1,0 +1,43 @@
+---
+// The home page's quiet motion layer: each section's parts arrive in reading
+// order once, figures count up once. Content is visible without JavaScript
+// (the hidden state only applies under html.js) and under reduced motion.
+---
+
+<script>
+	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const root = document.documentElement;
+
+	if (reduce || !('IntersectionObserver' in window)) {
+		root.classList.add('hb-still');
+	} else {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (!e.isIntersecting) continue;
+					e.target.classList.add('is-in');
+					e.target.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+					io.unobserve(e.target);
+				}
+			},
+			{ rootMargin: '0px 0px -12% 0px' },
+		);
+		document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+	}
+
+	function countUp(el: HTMLElement) {
+		const to = Number(el.dataset.count);
+		if (!to) return;
+		const t0 = performance.now();
+		const dur = 1100;
+		const tick = (t: number) => {
+			const k = Math.min(1, (t - t0) / dur);
+			el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 4))));
+			if (k < 1) requestAnimationFrame(tick);
+		};
+		requestAnimationFrame(tick);
+	}
+
+	// The hero arrives on load rather than on scroll.
+	requestAnimationFrame(() => root.classList.add('hb-loaded'));
+</script>

@@ -1,40 +1,28 @@
 ---
-title: Runbook
-description: Everything a human needs to understand, run, and develop our systems.
+title: Handbook
+description: How our systems work, how to run them, and how to fix them, written for people with no AI tools to lean on.
 template: splash
+# The hero itself is drawn by src/components/Hero.astro.
 hero:
-  tagline: How our systems work, how to run them, and how to fix them, written for people with no AI tools to lean on.
-  actions:
-    - text: Start here
-      link: /start-here/overview/
-      icon: right-arrow
-    - text: Something is broken
-      link: /start-here/if-something-is-broken/
-      variant: secondary
+  tagline: How our systems work, how to run them, and how to fix them.
+pagefind: false
+editUrl: false
+lastUpdated: false
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { loadHandbook } from '../../lib/handbook';
+import SectionIndex from '../../components/home/SectionIndex.astro';
+import BrokenBand from '../../components/home/BrokenBand.astro';
+import Health from '../../components/home/Health.astro';
+import Process from '../../components/home/Process.astro';
+import SiteFooter from '../../components/home/SiteFooter.astro';
+import Motion from '../../components/home/Motion.astro';
 
-## Find your way
+export const handbook = await loadHandbook();
 
-<CardGrid>
-	<LinkCard title="Architecture" href="/architecture/system-overview/" description="What the system is made of, how data moves through it, and why it was built that way." />
-	<LinkCard title="Infrastructure" href="/infrastructure/inventory/" description="Every server, account, domain, and environment, and where each one lives." />
-	<LinkCard title="Services" href="/services/" description="One page per service: what it does, how to run it, what it depends on." />
-	<LinkCard title="Development" href="/development/local-setup/" description="Set up a machine, find your way around the code, test it, and ship it." />
-	<LinkCard title="Operations" href="/operations/automation-inventory/" description="Deploys, backups, monitoring, and every task that used to run by itself." />
-	<LinkCard title="Runbooks" href="/runbooks/" description="Step-by-step fixes for specific problems. Written to be followed under stress." />
-	<LinkCard title="Access & security" href="/access/access-inventory/" description="Who can access what, where the secrets are kept, and how to rotate them." />
-	<LinkCard title="Reference" href="/reference/glossary/" description="Glossary, contacts, page templates, and commands you will use often." />
-</CardGrid>
-
-## How to trust a page
-
-<CardGrid>
-	<Card title="Check the bar under the title" icon="information">
-		Each page names an **owner** and the date someone last **verified** it against the real system. A page that is **stale** or **never verified** may be wrong.
-	</Card>
-	<Card title="Fix it when it's wrong" icon="pencil">
-		If a page doesn't match reality, correct it in the same sitting. Update the `lastVerified` date when you do. See [Writing docs](/start-here/writing-docs/).
-	</Card>
-</CardGrid>
+<SectionIndex sections={handbook.sections} />
+<BrokenBand />
+<Health totals={handbook.totals} />
+<Process />
+<SiteFooter />
+<Motion />

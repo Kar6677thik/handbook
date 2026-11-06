@@ -1,28 +1,522 @@
-/* Keep it plain: readable width, clear metadata, nothing decorative. */
+/* ==========================================================================
+   Handbook: one motif, the binder's index tab.
+   A tab is a block with its two outer corners rounded and its inner corners
+   square. It appears as the active page in the sidebar (a side tab sticking
+   out of the spine), the buttons (a top tab), the trust stamp under each
+   title, the photo masks and the home page's index.
+   Palette: white ground, near-black ink, mint as the one accent.
+   ========================================================================== */
+
 :root {
-	--sl-content-width: 50rem;
+	--tab-r: 14px; /* the one radius on the whole site */
+	--tab-r-sm: 8px; /* the same tab at text size */
+
+	--mint: #a1ffcb;
+	--mint-ink: #232323;
+	--amber: #ffd27a; /* stale: the only other signal colour */
+
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+	--t-press: 140ms;
+	--t-hover: 180ms;
+	--t-ui: 240ms;
+	--t-reveal: 800ms;
+
+	--sl-font: 'Pilcrow Rounded';
+	--sl-text-body: 1.0625rem;
+	--sl-line-height: 1.6;
+	--sl-line-height-headings: 1.08;
+	--sl-content-width: 44rem;
+	--sl-sidebar-width: 19rem;
+	--sl-nav-height: 4rem;
+
+	/* Dark theme: neutral greys, no blue cast. */
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #ededed;
+	--sl-color-gray-2: #cfcfcf;
+	--sl-color-gray-3: #a3a3a3;
+	--sl-color-gray-4: #6b6b6b;
+	--sl-color-gray-5: #3a3a3a;
+	--sl-color-gray-6: #242424;
+	--sl-color-black: #171717;
+
+	--sl-color-accent-low: #1f3a2c;
+	--sl-color-accent: #a1ffcb;
+	--sl-color-accent-high: #a1ffcb;
+	--sl-color-text: var(--sl-color-gray-1);
+	--sl-color-text-accent: var(--mint);
+	--sl-color-text-invert: var(--mint-ink);
+	--sl-color-bg-nav: var(--sl-color-black);
+	--sl-color-bg-sidebar: #1e1e1e;
+	--sl-color-bg-inline-code: #2a2a2a;
+	--sl-color-bg-accent: var(--mint);
+	--sl-color-hairline: transparent;
+	--sl-color-hairline-light: #2c2c2c;
+	--sl-color-hairline-shade: transparent;
+
+	--surface: #1e1e1e;
+	--surface-2: #2a2a2a;
+	--ground: var(--sl-color-black);
+	--ink: #ffffff;
+	--muted: #a3a3a3;
 }
 
-.page-meta {
+:root[data-theme='light'] {
+	--sl-color-white: #232323;
+	--sl-color-gray-1: #232323;
+	--sl-color-gray-2: #3b3b3b;
+	--sl-color-gray-3: #6e6e6e;
+	--sl-color-gray-4: #9b9b9b;
+	--sl-color-gray-5: #d6d6d6;
+	--sl-color-gray-6: #ebebeb;
+	--sl-color-gray-7: #f3f3f3;
+	--sl-color-black: #ffffff;
+
+	--sl-color-accent-low: #dcffec;
+	--sl-color-accent: #232323;
+	--sl-color-accent-high: #232323;
+	--sl-color-text: #232323;
+	--sl-color-text-accent: #232323;
+	--sl-color-text-invert: var(--mint-ink);
+	--sl-color-bg-nav: #ffffff;
+	--sl-color-bg-sidebar: #f3f3f3;
+	--sl-color-bg-inline-code: #efefef;
+	--sl-color-bg-accent: var(--mint);
+	--sl-color-hairline-light: #e3e3e3;
+
+	--surface: #f3f3f3;
+	--surface-2: #e8e8e8;
+	--ground: #ffffff;
+	--ink: #232323;
+	--muted: #6e6e6e;
+}
+
+/* ---------- Base type ---------- */
+
+body {
+	font-feature-settings: 'tnum' 0;
+	-webkit-font-smoothing: antialiased;
+}
+
+::selection {
+	background: var(--mint);
+	color: var(--mint-ink);
+}
+
+:focus-visible {
+	outline: 3px solid var(--mint);
+	outline-offset: 2px;
+}
+:root[data-theme='light'] :focus-visible {
+	outline-color: #232323;
+}
+
+/* ---------- Header: a plain bar, no rule ---------- */
+
+.header {
+	border-bottom: 0 !important;
+	background: var(--ground) !important;
+}
+
+.site-title {
+	gap: 0.6rem;
+	font-size: 1.375rem !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.04em;
+	color: var(--ink) !important;
+	text-transform: lowercase;
+}
+
+/* Search: a filled field shaped like a top tab. */
+button[data-open-modal] {
+	border: 0 !important;
+	background: var(--surface) !important;
+	border-radius: var(--tab-r-sm) var(--tab-r-sm) 0 0 !important;
+	color: var(--muted) !important;
+	transition: background-color var(--t-hover) ease;
+}
+button[data-open-modal]:hover {
+	background: var(--surface-2) !important;
+	color: var(--ink) !important;
+}
+button[data-open-modal] kbd {
+	background: var(--ground) !important;
+	border: 0 !important;
+	font-family: var(--__sl-font);
+}
+
+/* Search dialog: it floats, so it may have a shadow. */
+dialog[aria-label='Search'] {
+	border: 0 !important;
+	border-radius: var(--tab-r) var(--tab-r) 0 0 !important;
+	background: var(--ground) !important;
+}
+
+starlight-theme-select select,
+starlight-lang-select select {
+	font-family: var(--__sl-font);
+}
+
+/* ---------- Left sidebar: the binder's spine ---------- */
+
+.sidebar-pane {
+	border-inline-end: 0 !important;
+	background: var(--surface) !important;
+}
+
+.sidebar-content .top-level > li + li {
+	margin-top: 1.25rem;
+}
+
+.sidebar-content .large,
+.sidebar-content summary .group-label {
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+}
+
+/* No vertical hairlines down nested lists; indentation shows the nesting. */
+.sidebar-content ul ul li {
+	border-inline-start: 0 !important;
+	margin-inline-start: 0 !important;
+	padding-inline-start: 0.35rem !important;
+}
+
+.sidebar-content a {
+	font-size: 0.9375rem !important;
+	color: var(--sl-color-gray-2);
+	border-radius: 0 var(--tab-r-sm) var(--tab-r-sm) 0 !important;
+	transition:
+		background-color var(--t-hover) ease,
+		color var(--t-hover) ease,
+		transform var(--t-ui) var(--ease-out);
+}
+.sidebar-content a:hover {
+	color: var(--ink);
+	background: var(--surface-2);
+	transform: translateX(3px);
+}
+
+/* The current page is a side tab sticking out of the spine. */
+.sidebar-content a[aria-current='page'] {
+	background: var(--mint) !important;
+	color: var(--mint-ink) !important;
+	font-weight: 700 !important;
+	margin-inline-start: calc(-1 * var(--sl-sidebar-pad-x) - 1rem);
+	padding-inline-start: calc(var(--sl-sidebar-pad-x) + 1.5rem);
+	transform: none;
+}
+
+/* ---------- Right sidebar: table of contents ---------- */
+
+.right-sidebar {
+	border-inline-start: 0 !important;
+}
+.right-sidebar-panel h2 {
+	font-size: 0.9375rem !important;
+	font-weight: 700 !important;
+	color: var(--ink) !important;
+}
+starlight-toc a {
+	font-size: 0.875rem !important;
+	color: var(--muted) !important;
+	transition: color var(--t-hover) ease;
+}
+starlight-toc a:hover {
+	color: var(--ink) !important;
+}
+starlight-toc a[aria-current='true'] {
+	color: var(--ink) !important;
+	font-weight: 700;
+}
+starlight-toc a[aria-current='true']::before {
+	content: '';
+	display: inline-block;
+	width: 0.45rem;
+	height: 0.7rem;
+	margin-inline-end: 0.45rem;
+	background: var(--mint);
+	border-radius: 0 3px 3px 0;
+	vertical-align: -0.05rem;
+}
+
+mobile-starlight-toc nav {
+	border: 0 !important;
+	background: var(--surface) !important;
+}
+mobile-starlight-toc .toggle {
+	border: 0 !important;
+	border-radius: var(--tab-r-sm) var(--tab-r-sm) 0 0 !important;
+	background: var(--surface-2) !important;
+	color: var(--ink) !important;
+}
+mobile-starlight-toc .dropdown {
+	border: 0 !important;
+	background: var(--surface) !important;
+}
+mobile-starlight-toc .dropdown a {
+	border: 0 !important;
+}
+
+/* ---------- Content ---------- */
+
+.content-panel {
+	border-top: 0 !important;
+}
+.content-panel + .content-panel {
+	padding-top: 0.5rem;
+}
+
+.sl-markdown-content {
+	font-size: var(--sl-text-body);
+}
+
+h1#_top {
+	font-size: clamp(2.5rem, 1.6rem + 2.6vw, 3.75rem);
+	font-weight: 700;
+	letter-spacing: -0.045em;
+	line-height: 1;
+	color: var(--ink);
+	text-wrap: balance;
+}
+
+.sl-markdown-content :is(h2, h3, h4) {
+	font-weight: 700;
+	color: var(--ink);
+	text-wrap: balance;
+}
+.sl-markdown-content h2 {
+	font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+	letter-spacing: -0.035em;
+	margin-top: 3rem;
+}
+.sl-markdown-content h3 {
+	font-size: 1.375rem;
+	letter-spacing: -0.025em;
+	margin-top: 2rem;
+}
+.sl-markdown-content h4 {
+	font-size: 1.125rem;
+	letter-spacing: -0.015em;
+}
+
+/* Links: ink with a heavy mint underline that fills on hover. */
+.sl-markdown-content a:not(.sl-link-card a, .not-content a) {
+	color: var(--ink);
+	text-decoration: underline;
+	text-decoration-color: var(--mint);
+	text-decoration-thickness: 0.18em;
+	text-underline-offset: 0.18em;
+	transition:
+		background-color var(--t-hover) ease,
+		text-decoration-color var(--t-hover) ease;
+}
+:root[data-theme='light'] .sl-markdown-content a:not(.sl-link-card a, .not-content a) {
+	text-decoration-color: #3ccf86;
+}
+.sl-markdown-content a:not(.sl-link-card a, .not-content a):hover {
+	background: var(--mint);
+	color: var(--mint-ink);
+	text-decoration-color: transparent;
+}
+
+.sl-markdown-content :not(pre) > code {
+	border-radius: 4px;
+	padding: 0.1em 0.35em;
+	font-size: 0.875em;
+}
+
+/* Real tables keep their row lines; the header row is a tone step. */
+.sl-markdown-content table {
+	font-size: 0.9375rem;
+	border-collapse: collapse;
+}
+.sl-markdown-content :is(th, td) {
+	border-color: var(--sl-color-hairline-light) !important;
+	padding: 0.6rem 0.9rem !important;
+	vertical-align: top;
+}
+.sl-markdown-content thead th {
+	background: var(--surface);
+	color: var(--ink);
+	font-weight: 700;
+	border-bottom: 0 !important;
+}
+/* Key-value tables written with an empty header row: drop the empty row. */
+.sl-markdown-content thead:not(:has(th:not(:empty))) {
+	display: none;
+}
+.sl-markdown-content thead th:first-child {
+	border-radius: var(--tab-r-sm) 0 0 0;
+}
+.sl-markdown-content thead th:last-child {
+	border-radius: 0 var(--tab-r-sm) 0 0;
+}
+
+/* Task lists read as a checklist you work through. */
+.sl-markdown-content li:has(> input[type='checkbox']) {
+	list-style: none;
+	margin-inline-start: -1.25rem;
+}
+.sl-markdown-content input[type='checkbox'] {
+	accent-color: var(--mint);
+	inline-size: 1rem;
+	block-size: 1rem;
+	margin-inline-end: 0.5rem;
+	vertical-align: -0.15rem;
+}
+
+/* Code: a filled block shaped like a divider page. */
+.expressive-code .frame {
+	border-radius: 0 var(--tab-r) 0 0;
+	overflow: hidden;
+}
+
+/* Asides: a tone step and a coloured side tab, no outline. */
+.starlight-aside {
+	border-inline-start: 0 !important;
+	border-radius: 0 var(--tab-r) 0 0;
+	background: var(--surface) !important;
+	position: relative;
+	padding-inline-start: 1.5rem !important;
+}
+.starlight-aside::before {
+	content: '';
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	width: 0.4rem;
+	background: var(--mint);
+}
+.starlight-aside--caution::before,
+.starlight-aside--danger::before {
+	background: var(--amber);
+}
+.starlight-aside__title {
+	color: var(--ink) !important;
+}
+
+/* ---------- Page footer: edit link, last updated, next/previous ---------- */
+
+.pagination-links a {
+	border: 0 !important;
+	box-shadow: none !important; /* taste-skill-ignore: removes Starlight's shadow */
+	background: var(--surface);
+	border-radius: var(--tab-r) var(--tab-r) 0 0 !important;
+	transition:
+		background-color var(--t-hover) ease,
+		transform var(--t-ui) var(--ease-out);
+}
+.pagination-links a:hover {
+	background: var(--mint);
+	color: var(--mint-ink) !important;
+	transform: translateY(-3px);
+}
+.pagination-links a:hover * {
+	color: var(--mint-ink) !important;
+}
+.pagination-links a:active {
+	transform: translateY(0) scale(0.99);
+}
+.pagination-links .link-title {
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
+/* Link cards used inside doc pages. */
+.sl-link-card {
+	border: 0 !important;
+	box-shadow: none !important; /* taste-skill-ignore: removes Starlight's shadow */
+	background: var(--surface) !important;
+	border-radius: 0 var(--tab-r) 0 0 !important;
+	transition: background-color var(--t-hover) ease;
+}
+.sl-link-card:hover {
+	background: var(--surface-2) !important;
+}
+
+/* ---------- Trust stamp under each page title (PageTitle.astro) ---------- */
+
+.page-lede {
+	margin: 1rem 0 0;
+	max-width: 40ch;
+	font-size: clamp(1.25rem, 1.1rem + 0.55vw, 1.5rem);
+	line-height: 1.4;
+	color: var(--sl-color-gray-2);
+	text-wrap: pretty;
+}
+
+.stamp {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.25rem 1.25rem;
-	margin-top: 0.75rem;
-	padding: 0.5rem 0.75rem;
-	font-size: var(--sl-text-sm);
-	color: var(--sl-color-gray-2);
-	border-inline-start: 3px solid var(--sl-color-gray-5);
-	background: var(--sl-color-gray-7, var(--sl-color-gray-6));
-	border-radius: 0.25rem;
+	align-items: stretch;
+	gap: 0.5rem 1.25rem;
+	margin-top: 1.25rem;
+	font-size: 0.9375rem;
+	line-height: 1.35;
 }
-.page-meta--fresh { border-inline-start-color: var(--sl-color-green); }
-.page-meta--stale { border-inline-start-color: var(--sl-color-orange); }
-.page-meta--unverified { border-inline-start-color: var(--sl-color-gray-4); }
-.page-meta__flag { font-weight: 600; color: var(--sl-color-white); }
-
-/* Commands are the most-copied thing on the site; make them stand out. */
-.sl-markdown-content pre { font-size: 0.875rem; }
+.stamp__tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.45rem 0.85rem 0.45rem 0.75rem;
+	border-radius: var(--tab-r-sm) var(--tab-r-sm) 0 0;
+	font-weight: 700;
+	background: var(--surface-2);
+	color: var(--ink);
+	border-bottom: 3px solid var(--sl-color-gray-4);
+}
+.stamp--fresh .stamp__tab {
+	background: var(--mint);
+	color: var(--mint-ink);
+	border-bottom-color: #232323;
+}
+.stamp--stale .stamp__tab {
+	background: var(--amber);
+	color: #232323;
+	border-bottom-color: #232323;
+}
+.stamp__facts {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem 1.25rem;
+	color: var(--sl-color-gray-2);
+}
+.stamp__facts strong {
+	color: var(--ink);
+	font-weight: 500;
+}
+.stamp__note {
+	flex-basis: 100%;
+	color: var(--sl-color-gray-2);
+}
 
 @media print {
-	.page-meta { border: 1px solid #999; background: none; }
+	.stamp__tab {
+		border: 1px solid #999; /* taste-skill-ignore: print only */
+		background: none !important;
+	}
+	.sidebar-content a[aria-current='page'] {
+		margin: 0;
+	}
+}
+
+/* Phone menu button: a flat tab, not a floating circle. */
+starlight-menu-button button {
+	box-shadow: none !important; /* taste-skill-ignore: removes Starlight's shadow */
+	border-radius: var(--tab-r-sm) var(--tab-r-sm) 0 0 !important;
+	background: var(--surface) !important;
+	color: var(--ink) !important;
+}
+starlight-menu-button[aria-expanded='true'] button {
+	background: var(--mint) !important;
+	color: var(--mint-ink) !important;
+}
+
+/* No divider line beside the theme picker. */
+.right-group .social-icons::after {
+	content: none !important;
 }

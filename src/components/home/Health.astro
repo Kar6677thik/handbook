@@ -1,0 +1,26 @@
+---
+// Three stepped tiles with the handbook's real health, counted at build time.
+interface Props {
+	totals: { pages: number; verified: number; stale: number; todos: number };
+}
+const { totals } = Astro.props;
+---
+
+<section class="hb-sec hb-health not-content" aria-labelledby="hb-health-title" data-reveal>
+	<div class="hb-tile hb-tile--mint">
+		<p class="hb-tile__figure"><span data-count={totals.verified}>{totals.verified}</span> of {totals.pages}</p>
+		<p class="hb-tile__caption">pages checked against the real system by a person. The rest are drafts until someone does.</p>
+	</div>
+
+	<h2 id="hb-health-title" class="hb-h3 hb-health__title">How far to trust it</h2>
+
+	<div class="hb-tile hb-tile--ink">
+		<p class="hb-tile__figure"><span data-count={totals.todos}>{totals.todos}</span></p>
+		<p class="hb-tile__caption">open TODOs: gaps written down instead of guessed at.</p>
+	</div>
+
+	<div class="hb-tile hb-tile--grey">
+		<p class="hb-tile__figure">90 days</p>
+		<p class="hb-tile__caption">until a verified page turns stale and needs checking again.</p>
+	</div>
+</section>

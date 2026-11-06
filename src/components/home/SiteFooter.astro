@@ -1,0 +1,68 @@
+---
+// The close: the name built from index tabs of different heights, then the
+// sections, where the handbook lives, and the picture credits.
+import { sections } from '../../sections.mjs';
+
+const letters = 'handbook'.split('');
+const heights = [78, 100, 64, 88, 72, 96, 60, 84];
+const fills = ['mint', 'ink', 'grey', 'mint', 'ink', 'grey', 'ink', 'mint'];
+
+const credits = [
+	{ title: 'Mission Operations Control Room during Apollo 9', by: 'NASA', page: 'https://commons.wikimedia.org/wiki/File:Mission_Operations_Control_Room_during_Apollo_9.jpg' },
+	{ title: 'Control Data Processing IBM equipment, Oak Ridge', by: 'US Department of Energy', page: 'https://commons.wikimedia.org/wiki/File:Control_Data_Processing_IBM_equipment_Oak_Ridge_(7159856998).jpg' },
+	{ title: 'UNIVAC I at Census Bureau with two operators', by: 'US Census Bureau', page: 'https://commons.wikimedia.org/wiki/File:Univac_I_at_Census_Bureau_with_two_operators.jpg' },
+	{ title: 'Mission Control Center view, Skylab 3 recovery', by: 'NASA Johnson Space Center', page: 'https://commons.wikimedia.org/wiki/File:Mission_Control_Center_(MCC)_View_-_Skylab_(SL)-3_Recovery_-_JSC_(S73-34553).jpg' },
+	{ title: 'JBER telephone operators connect calls', by: 'David Bedard, US Army', page: 'https://commons.wikimedia.org/wiki/File:JBER_telephone_operators_connect_calls,_people_120124-A-ZY202-001.jpg' },
+	{ title: 'Gus Grissom Gemini-3 checklist', by: 'NASA', page: 'https://commons.wikimedia.org/wiki/File:Gus_Grissom_Gemini-3_checklist.jpg' },
+];
+---
+
+<footer class="hb-footer not-content" aria-labelledby="hb-footer-title" data-reveal>
+	<h2 id="hb-footer-title" class="sr-only">About this handbook</h2>
+	<a class="hb-mark" href="#_top" aria-label="handbook, back to top">
+		{
+			letters.map((l, i) => (
+				<span class={`hb-mark__block hb-mark__block--${fills[i]}`} style={`--h:${heights[i]}%;--i:${i}`} aria-hidden="true">
+					<span class="hb-mark__letter">{l}</span>
+				</span>
+			))
+		}
+	</a>
+
+	<div class="hb-footer__grid">
+		<nav class="hb-footer__links" aria-label="All sections">
+			{
+				sections.map((s) => (
+					<a href={s.start}>
+						{s.label}
+					</a>
+				))
+			}
+		</nav>
+		<div class="hb-footer__about">
+			<p>
+				Every page is a Markdown file in <a href="https://github.com/Kar6677thik/handbook">Kar6677thik/handbook</a>. Read them there if
+				this site is down.
+			</p>
+			<p>A push to <code>main</code> is live at book.karthiksurkanti.in in about five minutes.</p>
+		</div>
+	</div>
+
+	<div class="hb-footer__credits">
+		<p>
+			Photographs, all public domain, via Wikimedia Commons:
+			{
+				credits.map((c, i) => (
+					<>
+						<a href={c.page}>{c.title}</a> ({c.by}){i < credits.length - 1 ? '; ' : '.'}
+					</>
+				))
+			}
+		</p>
+	</div>
+
+	<div class="hb-footer__end">
+		<p>Handbook · written by people, checked by people</p>
+		<a class="hb-btn hb-btn--small" href="#_top">Back to top</a>
+	</div>
+</footer>

@@ -1,0 +1,94 @@
+---
+// How a piece of knowledge becomes a page you can trust, drawn with the
+// site's one shape: scattered tabs, pulled into a ribbon, filed in rows.
+import { Image } from 'astro:assets';
+import checklist from '../../assets/archive/gemini-3-checklist.jpg';
+
+// Deterministic pseudo-random, so the drawing is the same on every build.
+let seed = 1965;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+
+const W = 1200,
+	H = 266,
+	N = 48,
+	tw = 12,
+	th = 15;
+const tab = (x: number, y: number) =>
+	`M${x} ${y + th}V${y + 4}a4 4 0 0 1 4-4h${tw - 8}a4 4 0 0 1 4 4V${y + th}z`;
+
+type Mark = { d: string; fill: string; i: number; zone: number };
+const marks: Mark[] = [];
+for (let i = 0; i < N; i++) {
+	marks.push({
+		d: tab(20 + rnd() * 340, 20 + rnd() * (H - 55)),
+		fill: rnd() > 0.5 ? 'var(--hb-dot-a)' : 'var(--hb-dot-b)',
+		i,
+		zone: 0,
+	});
+}
+for (let i = 0; i < N; i++) {
+	const col = Math.floor(i / 3),
+		row = i % 3;
+	marks.push({ d: tab(420 + col * 22.5, H / 2 - 28 + row * 19), fill: 'var(--hb-dot-c)', i: N + i, zone: 1 });
+}
+for (let i = 0; i < N; i++) {
+	const col = i % 8,
+		row = Math.floor(i / 8);
+	marks.push({ d: tab(840 + col * 42, 30 + row * 37), fill: 'var(--mint)', i: 2 * N + i, zone: 2 });
+}
+
+// The same drawing turned to run top to bottom for phones.
+const VW = 300,
+	VH = 470;
+const vmarks: Mark[] = [];
+seed = 1965;
+for (let i = 0; i < 36; i++) vmarks.push({ d: tab(10 + rnd() * 270, 8 + rnd() * 100), fill: rnd() > 0.5 ? 'var(--hb-dot-a)' : 'var(--hb-dot-b)', i, zone: 0 });
+for (let i = 0; i < 36; i++) vmarks.push({ d: tab(VW / 2 - 30 + (i % 3) * 22, 128 + Math.floor(i / 3) * 18), fill: 'var(--hb-dot-c)', i: 36 + i, zone: 1 });
+for (let i = 0; i < 36; i++) vmarks.push({ d: tab(18 + (i % 9) * 31, 366 + Math.floor(i / 9) * 26), fill: 'var(--mint)', i: 72 + i, zone: 2 });
+
+const steps = [
+	{ name: 'Scattered', text: 'Knowledge lived in people’s heads, chat threads and AI sessions that nobody kept.' },
+	{ name: 'Written', text: 'Each system and each task becomes one page, from a template, with commands you can paste.' },
+	{ name: 'Verified', text: 'Someone checks the page against the real system, dates it, and checks it again every 90 days.' },
+];
+---
+
+<section class="hb-sec hb-process not-content" aria-labelledby="hb-process-title" data-reveal>
+	<div class="hb-process__top">
+		<div class="hb-process__intro">
+			<h2 id="hb-process-title" class="hb-h2">From heads to pages.</h2>
+			<p class="hb-process__lede">
+				Astronauts flew with every procedure on paper, because a checklist works when nothing else does. This handbook is the same
+				promise for our systems: if it isn’t written down and checked, it doesn’t count.
+			</p>
+		</div>
+		<figure class="hb-photo hb-process__photo">
+			<figcaption class="hb-photo__tab">Gemini 3 checklist, 1965</figcaption>
+			<Image
+				src={checklist}
+				alt="An astronaut in a pressure suit reads a printed checklist while a technician leans in to point at a line"
+				widths={[480, 800, 1200]}
+				sizes="(min-width: 72rem) 40vw, 90vw"
+				loading="lazy"
+			/>
+		</figure>
+	</div>
+
+	<svg class="hb-flow hb-flow--wide" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Small tabs scattered on the left are pulled into a narrow ribbon in the middle and filed into neat mint rows on the right.">
+		{marks.map((m) => <path d={m.d} fill={m.fill} style={`--i:${m.i}`} class={`hb-flow__m z${m.zone}`} />)}
+	</svg>
+	<svg class="hb-flow hb-flow--tall" viewBox={`0 0 ${VW} ${VH}`} role="img" aria-label="Scattered tabs at the top are pulled into a ribbon and filed into neat mint rows at the bottom.">
+		{vmarks.map((m) => <path d={m.d} fill={m.fill} style={`--i:${m.i}`} class={`hb-flow__m z${m.zone}`} />)}
+	</svg>
+
+	<ol class="hb-steps">
+		{
+			steps.map((s) => (
+				<li class="hb-step">
+					<h3 class="hb-step__name">{s.name}</h3>
+					<p>{s.text}</p>
+				</li>
+			))
+		}
+	</ol>
+</section>

@@ -1,0 +1,120 @@
+---
+// The binder's index, made usable: pick a section tab and its pages appear as
+// bands, each with its owner, its trust state and its open TODOs. Without
+// JavaScript every section is shown one after another.
+import { fmtDate, type SectionInfo } from '../../lib/handbook';
+
+interface Props {
+	sections: SectionInfo[];
+}
+const { sections } = Astro.props;
+const stateLabel = (p: SectionInfo['pages'][number]) =>
+	p.state === 'fresh' ? `Verified ${fmtDate(p.verifiedOn!)}` : p.state === 'stale' ? 'Stale' : 'Not verified';
+---
+
+<section class="hb-sec hb-indexsec not-content" aria-labelledby="hb-index-title" data-reveal>
+	<div class="hb-indexsec__head">
+		<h2 id="hb-index-title" class="hb-h2">Nine sections, every page dated.</h2>
+		<button type="button" class="hb-btn hb-btn--ink" data-open-search>Search the handbook</button>
+	</div>
+
+	<div class="hb-binder" data-binder>
+		<div class="hb-binder__tabs" role="tablist" aria-label="Sections" hidden data-tablist>
+			{
+				sections.map((s, i) => (
+					<button
+						type="button"
+						role="tab"
+						class="hb-binder__tab"
+						id={`tab-${s.dir}`}
+						aria-controls={`panel-${s.dir}`}
+						aria-selected={i === 0 ? 'true' : 'false'}
+						tabindex={i === 0 ? 0 : -1}
+					>
+						<span class="hb-binder__tabname">{s.label}</span>
+						<span class="hb-binder__tabcount">
+							{s.pages.length} {s.pages.length === 1 ? 'page' : 'pages'}
+						</span>
+					</button>
+				))
+			}
+		</div>
+
+		<div class="hb-binder__panels">
+			{
+				sections.map((s) => (
+					<div class="hb-binder__panel" id={`panel-${s.dir}`} role="tabpanel" aria-labelledby={`tab-${s.dir}`} data-panel>
+						<div class="hb-binder__about">
+							<h3 class="hb-binder__title">{s.label}</h3>
+							<p>{s.about}</p>
+							<p class="hb-binder__tally">
+								{s.verified} of {s.pages.length} verified · {s.todos} {s.todos === 1 ? 'TODO' : 'TODOs'} open
+							</p>
+						</div>
+						<ol class="hb-bands">
+							{s.pages.map((p, j) => (
+								<li style={`--n:${j}`}>
+									<a class="hb-band" href={p.href}>
+										<span class="hb-band__main">
+											<span class="hb-band__title">{p.title}</span>
+											{p.description && <span class="hb-band__desc">{p.description}</span>}
+										</span>
+										<span class="hb-band__meta">
+											<span class:list={['hb-chip', `hb-chip--${p.state}`]}>{stateLabel(p)}</span>
+											<span class="hb-band__fact">{p.owner ?? 'No owner'}</span>
+											<span class="hb-band__fact">{p.todos === 0 ? 'No TODOs' : `${p.todos} ${p.todos === 1 ? 'TODO' : 'TODOs'}`}</span>
+										</span>
+									</a>
+								</li>
+							))}
+						</ol>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<script>
+	// Progressive enhancement: turn the stacked sections into tabs.
+	const binder = document.querySelector<HTMLElement>('[data-binder]');
+	if (binder) {
+		const list = binder.querySelector<HTMLElement>('[data-tablist]')!;
+		const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+		const panels = [...binder.querySelectorAll<HTMLElement>('[data-panel]')];
+		list.hidden = false;
+		binder.classList.add('is-tabbed');
+
+		const select = (i: number, focus = false) => {
+			tabs.forEach((t, j) => {
+				const on = i === j;
+				t.setAttribute('aria-selected', String(on));
+				t.tabIndex = on ? 0 : -1;
+				panels[j].hidden = !on;
+			});
+			panels[i].classList.remove('is-dealt');
+			void panels[i].offsetWidth; // restart the row-by-row arrival
+			panels[i].classList.add('is-dealt');
+			if (focus) tabs[i].focus();
+		};
+
+		tabs.forEach((t, i) => {
+			t.addEventListener('click', () => select(i));
+			t.addEventListener('keydown', (e) => {
+				const keys: Record<string, number> = {
+					ArrowDown: i + 1,
+					ArrowRight: i + 1,
+					ArrowUp: i - 1,
+					ArrowLeft: i - 1,
+					Home: 0,
+					End: tabs.length - 1,
+				};
+				if (e.key in keys) {
+					e.preventDefault();
+					select((keys[e.key] + tabs.length) % tabs.length, true);
+				}
+			});
+		});
+		select(0);
+	}
+</script>

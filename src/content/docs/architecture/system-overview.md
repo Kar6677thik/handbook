@@ -25,7 +25,7 @@ TODO: Add a diagram. Draw it in any tool (Excalidraw, draw.io), export it as SVG
 
 | Component | What it does | Runs on | Code | Docs |
 | --- | --- | --- | --- | --- |
-| TODO: Web app | Customer-facing UI | TODO | TODO: repo link | [Service page](/services/example-service/) |
+| TODO: Web app | Customer-facing UI | TODO | TODO: repo link | [Service catalog](/services/) |
 | TODO: API | Business logic, auth | TODO | TODO | TODO |
 | TODO: Database | System of record | TODO | n/a | [Backups](/operations/backups-and-restore/) |
 
