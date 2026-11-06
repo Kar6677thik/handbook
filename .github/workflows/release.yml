@@ -66,7 +66,15 @@ jobs:
       # 3. Move :latest to the new digest. This is what triggers the deploy.
       - name: Promote to :latest
         if: github.ref == 'refs/heads/main'
-        run: docker buildx imagetools create --tag "$IMAGE:latest" "$IMAGE@${{ steps.build.outputs.digest }}"
+        run: docker buildx imagetools create --prefer-index=false --tag "$IMAGE:latest" "$IMAGE@${{ steps.build.outputs.digest }}"
+
+      # :latest must be a byte-for-byte copy, so the deployed digest is the attested one.
+      - name: Verify :latest is the attested digest
+        if: github.ref == 'refs/heads/main'
+        run: |
+          latest=$(docker buildx imagetools inspect "$IMAGE:latest" --format '{{json .Manifest}}' | jq -r .digest)
+          echo "latest=$latest built=${{ steps.build.outputs.digest }}"
+          test "$latest" = "${{ steps.build.outputs.digest }}"
 
       - name: Summary
         run: |
