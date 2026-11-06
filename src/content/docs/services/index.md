@@ -10,6 +10,7 @@ Every deployable thing gets a row in this table and its own page. The page layou
 
 | Service | What it does | Criticality | Owner | Page |
 | --- | --- | --- | --- | --- |
+| Handbook | This site: the engineering handbook | Low | Kar6677thik | [Handbook](/services/handbook/) |
 | TODO | TODO | High / Medium / Low | TODO | [Example service](/services/example-service/) |
 
 **Criticality levels**
