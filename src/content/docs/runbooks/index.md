@@ -24,4 +24,7 @@ A runbook is a checklist for one specific situation. Write it for someone who is
 | [Service is down](/runbooks/service-is-down/) | A service is erroring, timing out, or unreachable |
 | [Restore from backup](/operations/backups-and-restore/) | Data is lost or corrupted |
 | [Disaster recovery](/operations/disaster-recovery/) | A region, account, or provider is gone |
+| [Can't reach Megatron](/runbooks/megatron-unreachable/) | SSH times out, or every tailnet site is unreachable |
+| [A public site is down](/runbooks/public-site-down/) | A `*.karthiksurkanti.in` site shows an error or won't load |
+| [A catalog release is refused or fails](/runbooks/catalog-release-problems/) | `deploy-app.ps1` refuses or fails, or the handbook stops updating |
 | TODO | Add one for every alert in [Monitoring & alerts](/operations/monitoring-and-alerts/) |

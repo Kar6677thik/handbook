@@ -4,6 +4,10 @@ The documentation for our systems: what they are, how they work, and how to run,
 
 **Read the docs as plain files:** start at [`src/content/docs/start-here/overview.md`](src/content/docs/start-here/overview.md). You don't need the website.
 
+## Public repository: read this first
+
+This repo and the site are public. Never commit addresses, tailnet names, usernames, ports, credential paths, firewall or exposure details, or security gaps. The rules are in [CLAUDE.md](CLAUDE.md), and `npm run check:confidential` (run automatically before every build) enforces the common cases.
+
 ## Run the site
 
 Requires Node.js 22+.
@@ -14,6 +18,7 @@ npm run dev       # http://localhost:4321
 npm run build     # static site in dist/, fails on broken internal links
 npm run preview   # serve dist/
 npm run audit     # stale / unverified / unowned pages and open TODOs
+npm run check:confidential   # blocks infrastructure details from being published
 ```
 
 `dist/` is plain HTML with built-in offline search, so any static host will serve it. Keep a copy somewhere you can reach during an outage.

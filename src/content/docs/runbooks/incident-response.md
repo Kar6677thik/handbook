@@ -23,7 +23,7 @@ Even with only two people, split the work:
 
 Restore service first; work out why afterwards. In rough order of preference:
 
-1. Roll back the last deploy. See [Deployment, Rollback](/operations/deployment/#rollback).
+1. Roll back the last deploy. See [Deployment, Rollback](/operations/deployment/#rollback-summary).
 2. Turn off the feature flag.
 3. Scale up or restart. See [Service is down](/runbooks/service-is-down/).
 4. Fail over. See [Disaster recovery](/operations/disaster-recovery/).

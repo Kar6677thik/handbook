@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "check:confidential": "node scripts/check-confidential.mjs",
+    "prebuild": "node scripts/check-confidential.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

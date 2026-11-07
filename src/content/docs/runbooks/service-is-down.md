@@ -11,7 +11,7 @@ sidebar:
 
 - Is it every user or some? Every endpoint or one?
 - When did it start? Look at the dashboard: TODO: link.
-- **Did anything change just before it started?** A deploy, a config change, an infrastructure change, a vendor incident. If so, [roll it back](/operations/deployment/#rollback) first and investigate afterwards.
+- **Did anything change just before it started?** A deploy, a config change, an infrastructure change, a vendor incident. If so, [roll it back](/operations/deployment/#rollback-summary) first and investigate afterwards.
 
 ## 2. Is it running?
 

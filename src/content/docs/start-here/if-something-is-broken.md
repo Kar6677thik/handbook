@@ -9,9 +9,9 @@ Stay calm and work through the steps in order.
 
 ## 1. Confirm it is really broken
 
-- Open the product the way a user would. TODO: URL(s).
-- Look at the dashboards. TODO: URL. See [Monitoring & alerts](/operations/monitoring-and-alerts/).
-- Check the cloud provider's status page. TODO: URL.
+- Run the [manual health check](/operations/monitoring-and-alerts/#the-manual-health-check): it tests every public site in one go.
+- Check you can reach Megatron: `ssh $MEGATRON 'echo ok'`. If not, see [Can't reach Megatron](/runbooks/megatron-unreachable/).
+- Check the providers: cloudflarestatus.com, status.tailscale.com, githubstatus.com.
 
 ## 2. Tell people
 
@@ -19,8 +19,11 @@ Post in TODO: incident channel: **what** is broken, **when** it started, and tha
 
 ## 3. Find the right runbook
 
+- A `*.karthiksurkanti.in` site is down: [A public site is down](/runbooks/public-site-down/)
+- You can't SSH in, or tailnet sites are unreachable: [Can't reach Megatron](/runbooks/megatron-unreachable/)
+- A release won't go out, or the handbook stopped updating: [A catalog release is refused or fails](/runbooks/catalog-release-problems/)
 - A whole service is down or erroring: [Service is down](/runbooks/service-is-down/)
-- Something changed just before it broke: roll back. See [Deployment, Rollback](/operations/deployment/#rollback)
+- Something changed just before it broke: roll back. See [Deployment, Rollback](/operations/deployment/#rollback-summary)
 - Data is lost or corrupted: [Backups & restore](/operations/backups-and-restore/)
 - A whole region or provider is gone: [Disaster recovery](/operations/disaster-recovery/)
 - Anything else: the [Runbooks](/runbooks/) index

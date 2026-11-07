@@ -5,8 +5,9 @@ import { Image } from 'astro:assets';
 import switchboard from '../../assets/archive/switchboard-1950.jpg';
 
 const routes = [
-	{ when: 'A whole service is down or erroring', href: '/runbooks/service-is-down/', to: 'Service is down' },
-	{ when: 'Something changed just before it broke', href: '/operations/deployment/#rollback', to: 'Roll back the deploy' },
+	{ when: 'A public site shows an error', href: '/runbooks/public-site-down/', to: 'A public site is down' },
+	{ when: 'You can’t SSH in to Megatron', href: '/runbooks/megatron-unreachable/', to: 'Can’t reach Megatron' },
+	{ when: 'Something changed just before it broke', href: '/operations/deployment/#rollback-summary', to: 'Roll back the deploy' },
 	{ when: 'Data is lost or corrupted', href: '/operations/backups-and-restore/', to: 'Backups & restore' },
 	{ when: 'A whole provider or machine is gone', href: '/operations/disaster-recovery/', to: 'Disaster recovery' },
 	{ when: 'You are stuck', href: '/reference/contacts/', to: 'Who to call' },

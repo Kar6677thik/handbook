@@ -48,6 +48,7 @@ sidebar:
 ## Rules
 
 - **Write commands people can copy and paste.** Use exact commands, not "restart the service".
+- **Never put anything that would help someone attack the home server.** This site and its repository are public. No IP addresses, tailnet names, SSH usernames, ports, credential or backup file paths, firewall or exposure details, exact software versions, or known security gaps. Use placeholders and keep the real values in the owner's private notes. See [Private details](/start-here/private-details/). The build fails if `npm run check:confidential` finds one.
 - **Never put secrets here.** Say *where* a secret is kept (e.g. "vault path `prod/db/admin`"), never the value itself.
 - **Explain why, not just what.** The reasons behind a design are the first thing people forget. Record big ones as [decisions](/architecture/decisions/).
 - **Verify, then date it.** Only change `lastVerified` after you've checked the page against the real system.
