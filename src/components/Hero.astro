@@ -1,21 +1,22 @@
 ---
 // Home page hero (Starlight renders Hero only for pages with `hero:` in
 // frontmatter, i.e. the home page). Left: a mint divider page whose index
-// tabs are the nine sections. Right: archival photographs of people running
-// complex systems by procedure, crossfading slowly.
-import { Image } from 'astro:assets';
+// tabs are the nine sections. Right: the owner's own systems, each as a tab
+// filed in the binder: what it is, and whether it's public or private.
+// Only public hostnames appear here (see CLAUDE.md, Rule 1).
 import { sections } from '../sections.mjs';
-import apollo9 from '../assets/archive/apollo-9-mocr.jpg';
-import oakRidge from '../assets/archive/oak-ridge-data-processing.jpg';
-import univac from '../assets/archive/univac-census.jpg';
-import skylab from '../assets/archive/skylab-mcc.jpg';
+import { loadHandbook } from '../lib/handbook';
 
-const room = [
-	{ src: apollo9, alt: 'Rows of flight controllers at their consoles facing the wall screens of a mission control room', caption: 'Mission control, Apollo 9, 1969' },
-	{ src: oakRidge, alt: 'Two operators loading tape drives among rows of 1960s data processing machines', caption: 'Data processing, Oak Ridge, 1967' },
-	{ src: univac, alt: 'An operator at a UNIVAC console while a colleague stands beside her, tape drives behind them', caption: 'UNIVAC operators, US Census Bureau, about 1960' },
-	{ src: skylab, alt: 'Flight directors standing at consoles in front of the mission control wall displays', caption: 'Flight directors, Skylab 3 recovery, 1973' },
+const systems = [
+	{ name: 'Handbook', what: 'these docs', where: 'book.karthiksurkanti.in', href: '/services/handbook/' },
+	{ name: 'Slate', what: 'notes app, web and MCP', where: 'lib.karthiksurkanti.in', href: '/architecture/system-overview/' },
+	{ name: 'Sprawl', what: 'canvas app and its MCP', where: 'canvas-mcp.karthiksurkanti.in', href: '/architecture/system-overview/' },
+	{ name: 'Orbit Identity', what: 'sign-in for the MCP servers', where: 'auth.karthiksurkanti.in', href: '/services/orbit-identity/' },
+	{ name: 'Orbit', what: 'cluster console and app catalog', where: 'private', href: '/services/orbit/' },
+	{ name: 'AnythingTCG', what: 'card game server', where: 'private notes', href: '/architecture/system-overview/' },
 ];
+
+const { totals } = await loadHandbook();
 ---
 
 <section class="hb-hero not-content" aria-labelledby="hb-hero-title">
@@ -33,8 +34,8 @@ const room = [
 		<div class="hb-hero__body">
 			<h1 id="hb-hero-title" class="hb-hero__title" data-rise>run everything by&nbsp;hand.</h1>
 			<p class="hb-hero__lede" data-rise>
-				The handbook for our infrastructure, services and procedures: what each one is, how to run it, and how to fix it when it breaks.
-				Written for people, with no AI to lean on.
+				My handbook for everything I run on my home server: what each system is, how to operate it, and how to fix it when it breaks.
+				Written so I can do all of it myself, with no AI to lean on.
 			</p>
 			<div class="hb-hero__actions" data-rise>
 				<a class="hb-btn" href="/start-here/overview/">Start reading</a>
@@ -49,62 +50,30 @@ const room = [
 		</p>
 	</div>
 
-	<figure class="hb-room" data-crossfade>
-		<div class="hb-room__frame">
-			{
-				room.map((r, i) => (
-					<Image
-						class:list={['hb-room__img', { 'is-on': i === 0 }]}
-						src={r.src}
-						alt={r.alt}
-						widths={[640, 960, 1280, 1800]}
-						sizes="(min-width: 50rem) 50vw, 100vw"
-						loading={i === 0 ? 'eager' : 'lazy'}
-						fetchpriority={i === 0 ? 'high' : 'auto'}
-						data-caption={r.caption}
-					/>
-				))
-			}
+	<div class="hb-run">
+		<p class="hb-run__tab">What I run</p>
+		<div class="hb-run__page">
+			<ul class="hb-run__list">
+				{
+					systems.map((s, i) => (
+						<li style={`--i:${i}`}>
+							<a class="hb-run__item" href={s.href}>
+								<span class="hb-run__name">{s.name}</span>
+								<span class="hb-run__what">{s.what}</span>
+								<span class:list={['hb-run__where', { 'is-private': !s.where.includes('.') }]}>{s.where}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="hb-run__foot">
+				One home server, {totals.pages} pages, {totals.verified} checked by hand so far.
+			</p>
 		</div>
-		<figcaption class="hb-room__tab" aria-live="off">{room[0].caption}</figcaption>
-	</figure>
+	</div>
 </section>
 
 <script>
-	// Signature move: the room's light shifts. Four archival frames crossfade,
-	// holding about six seconds each. Paused when the tab is hidden; under
-	// reduced motion only the first frame shows.
-	const fig = document.querySelector<HTMLElement>('[data-crossfade]');
-	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-	if (fig && !reduce.matches) {
-		const imgs = [...fig.querySelectorAll<HTMLImageElement>('.hb-room__img')];
-		const cap = fig.querySelector('.hb-room__tab')!;
-		let i = 0;
-		let timer: number | undefined;
-		const step = () => {
-			const next = (i + 1) % imgs.length;
-			const show = () => {
-				imgs[i].classList.remove('is-on');
-				imgs[next].classList.add('is-on');
-				cap.classList.add('is-swapping');
-				setTimeout(() => {
-					cap.textContent = imgs[next].dataset.caption ?? '';
-					cap.classList.remove('is-swapping');
-				}, 450);
-				i = next;
-			};
-			imgs[next].complete ? show() : imgs[next].addEventListener('load', show, { once: true });
-		};
-		const start = () => (timer ??= window.setInterval(step, 6200));
-		const stop = () => {
-			clearInterval(timer);
-			timer = undefined;
-		};
-		document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
-		imgs.slice(1).forEach((img) => (img.loading = 'eager'));
-		start();
-	}
-
 	// "Search every page" opens Starlight's own search dialog.
 	document.querySelectorAll('[data-open-search]').forEach((b) =>
 		b.addEventListener('click', (e) => {

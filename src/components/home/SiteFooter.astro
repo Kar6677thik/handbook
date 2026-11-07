@@ -1,20 +1,12 @@
 ---
 // The close: the name built from index tabs of different heights, then the
-// sections, where the handbook lives, and the picture credits.
+// sections and where the handbook lives.
 import { sections } from '../../sections.mjs';
 
 const letters = 'handbook'.split('');
 const heights = [78, 100, 64, 88, 72, 96, 60, 84];
 const fills = ['mint', 'ink', 'grey', 'mint', 'ink', 'grey', 'ink', 'mint'];
 
-const credits = [
-	{ title: 'Mission Operations Control Room during Apollo 9', by: 'NASA', page: 'https://commons.wikimedia.org/wiki/File:Mission_Operations_Control_Room_during_Apollo_9.jpg' },
-	{ title: 'Control Data Processing IBM equipment, Oak Ridge', by: 'US Department of Energy', page: 'https://commons.wikimedia.org/wiki/File:Control_Data_Processing_IBM_equipment_Oak_Ridge_(7159856998).jpg' },
-	{ title: 'UNIVAC I at Census Bureau with two operators', by: 'US Census Bureau', page: 'https://commons.wikimedia.org/wiki/File:Univac_I_at_Census_Bureau_with_two_operators.jpg' },
-	{ title: 'Mission Control Center view, Skylab 3 recovery', by: 'NASA Johnson Space Center', page: 'https://commons.wikimedia.org/wiki/File:Mission_Control_Center_(MCC)_View_-_Skylab_(SL)-3_Recovery_-_JSC_(S73-34553).jpg' },
-	{ title: 'JBER telephone operators connect calls', by: 'David Bedard, US Army', page: 'https://commons.wikimedia.org/wiki/File:JBER_telephone_operators_connect_calls,_people_120124-A-ZY202-001.jpg' },
-	{ title: 'Gus Grissom Gemini-3 checklist', by: 'NASA', page: 'https://commons.wikimedia.org/wiki/File:Gus_Grissom_Gemini-3_checklist.jpg' },
-];
 ---
 
 <footer class="hb-footer not-content" aria-labelledby="hb-footer-title" data-reveal>
@@ -48,21 +40,9 @@ const credits = [
 		</div>
 	</div>
 
-	<div class="hb-footer__credits">
-		<p>
-			Photographs, all public domain, via Wikimedia Commons:
-			{
-				credits.map((c, i) => (
-					<>
-						<a href={c.page}>{c.title}</a> ({c.by}){i < credits.length - 1 ? '; ' : '.'}
-					</>
-				))
-			}
-		</p>
-	</div>
 
 	<div class="hb-footer__end">
-		<p>Handbook · written by people, checked by people</p>
+		<p>Handbook · written and checked by hand</p>
 		<a class="hb-btn hb-btn--small" href="#_top">Back to top</a>
 	</div>
 </footer>

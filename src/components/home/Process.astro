@@ -1,8 +1,6 @@
 ---
 // How a piece of knowledge becomes a page you can trust, drawn with the
 // site's one shape: scattered tabs, pulled into a ribbon, filed in rows.
-import { Image } from 'astro:assets';
-import checklist from '../../assets/archive/gemini-3-checklist.jpg';
 
 // Deterministic pseudo-random, so the drawing is the same on every build.
 let seed = 1965;
@@ -58,20 +56,20 @@ const steps = [
 		<div class="hb-process__intro">
 			<h2 id="hb-process-title" class="hb-h2">From heads to pages.</h2>
 			<p class="hb-process__lede">
-				Astronauts flew with every procedure on paper, because a checklist works when nothing else does. This handbook is the same
-				promise for our systems: if it isn’t written down and checked, it doesn’t count.
+				Most of how my systems run used to live in AI sessions and in my head. This handbook writes each piece down, so it works when
+				nothing else does: if it isn’t written down and checked, it doesn’t count.
 			</p>
 		</div>
-		<figure class="hb-photo hb-process__photo">
-			<figcaption class="hb-photo__tab">Gemini 3 checklist, 1965</figcaption>
-			<Image
-				src={checklist}
-				alt="An astronaut in a pressure suit reads a printed checklist while a technician leans in to point at a line"
-				widths={[480, 800, 1200]}
-				sizes="(min-width: 72rem) 40vw, 90vw"
-				loading="lazy"
-			/>
-		</figure>
+		<div class="hb-used">
+			<p class="hb-used__tab">What used to just happen</p>
+			<ul class="hb-used__list">
+				<li><strong>Releasing Sprawl MCP</strong><span>about ten times in two days, now a written procedure</span></li>
+				<li><strong>Putting a new site online</strong><span>tunnel rule, restart, DNS record</span></li>
+				<li><strong>Checking every site after a change</strong><span>now a two-minute manual check</span></li>
+				<li><strong>Changing Slate's server-side config</strong><span>edits that a repo-only change would lose</span></li>
+			</ul>
+			<a class="hb-textlink" href="/operations/automation-inventory/">The full list</a>
+		</div>
 	</div>
 
 	<svg class="hb-flow hb-flow--wide" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Small tabs scattered on the left are pulled into a narrow ribbon in the middle and filed into neat mint rows on the right.">

@@ -1,8 +1,6 @@
 ---
 // The band that splits the page: what to do when something is broken.
 // Mirrors start-here/if-something-is-broken.md, which stays the source of truth.
-import { Image } from 'astro:assets';
-import switchboard from '../../assets/archive/switchboard-1950.jpg';
 
 const routes = [
 	{ when: 'A public site shows an error', href: '/runbooks/public-site-down/', to: 'A public site is down' },
@@ -38,15 +36,5 @@ const routes = [
 			}
 		</ul>
 
-		<figure class="hb-photo hb-broken__photo">
-			<figcaption class="hb-photo__tab">Switchboard operators, 1950</figcaption>
-			<Image
-				src={switchboard}
-				alt="Three telephone operators at a switchboard, patching calls by hand, with cards of instructions pinned above them"
-				widths={[480, 800, 1200]}
-				sizes="(min-width: 72rem) 30vw, 90vw"
-				loading="lazy"
-			/>
-		</figure>
 	</div>
 </section>
