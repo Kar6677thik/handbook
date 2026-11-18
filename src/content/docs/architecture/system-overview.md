@@ -26,7 +26,9 @@ Addresses, ports and routing details are deliberately not shown here; see [Priva
 │            lib.   → Slate web                   Orbit Identity sign-in     │
 │            mcp.   → Slate MCP                   Sprawl                     │
 │            auth.  → Orbit Identity              Slate API                  │
-│            canvas-mcp. → Sprawl MCP                                         │
+│            canvas-mcp. → Sprawl MCP           Socrates, Hey Ann boards   │
+│            socrates-mcp. → Socrates MCP                                     │
+│            heyann-mcp. → Hey Ann MCP                                        │
 │                                                                            │
 │  handbook-updater (every 5 min) ── pulls the newest handbook image         │
 └────────────────────────────────────────────────────────────────────────────┘
@@ -44,12 +46,14 @@ Public sites are listed on [DNS, domains & certificates](/infrastructure/dns-dom
 | Component | What it does | Runs on (namespace) | Code | Docs |
 | --- | --- | --- | --- | --- |
 | Orbit | Private console: read-only view of the cluster, and the app catalog that renders and releases stateless apps | `orbit-system` | orbit-cloud (private repo) | [Orbit](/services/orbit/) |
-| Orbit Identity | OAuth 2.1 server (replaced Auth0) for Slate MCP and Sprawl MCP | `identity` | orbit-cloud | [Orbit Identity](/services/orbit-identity/) |
+| Orbit Identity | OAuth 2.1 server (replaced Auth0) for the Slate, Sprawl, Socrates and Hey Ann MCPs | `identity` | orbit-cloud | [Orbit Identity](/services/orbit-identity/) |
 | Catalog apps | Stateless apps released through the Orbit catalog: `handbook`, `sprawl-mcp` | `app-<name>` | each app's own repo | [Catalog apps](/operations/catalog-apps/) |
 | Handbook | This site | `app-handbook` | [handbook](https://github.com/Kar6677thik/handbook) | [Handbook](/services/handbook/) |
-| Slate (API, web, MCP) | Notes app: API, Next.js web UI, MCP server | `slate`, `slate-web`, `slate-mcp` | slate.lib | TODO: Slate service page |
-| Sprawl (API, MCP) | Canvas app and its MCP server | `sprawl`, `app-sprawl-mcp` | [Sprawl](https://github.com/Kar6677thik/Sprawl) | TODO: Sprawl service page |
-| AnythingTCG | App server and its Postgres | `anythingtcg` | AnythingTCG repo | TODO: AnythingTCG service page |
+| Slate (API, web, MCP) | Markdown library: API, Next.js web UI, MCP server | `slate`, `slate-web`, `slate-mcp` | [slate.lib](https://github.com/Kar6677thik/slate.lib) | [Slate](/services/slate/) |
+| Sprawl (API, MCP) | Infinite canvas and its MCP server | `sprawl`, `app-sprawl-mcp` | [Sprawl](https://github.com/Kar6677thik/Sprawl) | [Sprawl](/services/sprawl/) |
+| Socrates | Spaced-repetition quiz with an MCP server | `socrates` | [socrates](https://github.com/Kar6677thik/socrates) | [Socrates](/services/socrates/) |
+| Hey Ann | Kanban board run through MCP | `heyann` | [Hey_Ann](https://github.com/Kar6677thik/Hey_Ann) | [Hey Ann](/services/hey-ann/) |
+| AnythingTCG | Trading-card game server and its Postgres (in progress) | `anythingtcg` | private repo | [AnythingTCG](/services/anythingtcg/) |
 | k3s system | DNS, storage, metrics | `kube-system` | k3s defaults | [Inventory](/infrastructure/inventory/) |
 
 ## External dependencies
@@ -65,7 +69,7 @@ Public sites are listed on [DNS, domains & certificates](/infrastructure/dns-dom
 ## Known weak spots (reliability)
 
 - **One machine.** Any hardware fault on Megatron takes down every app.
-- **No automatic backups.** See [Backups & restore](/operations/backups-and-restore/).
+- **Backups are partial.** Sprawl, Socrates and Hey Ann have off-host backups; the rest are still being added. See [Backups & restore](/operations/backups-and-restore/).
 - **No monitoring.** Nothing alerts when a site goes down. See [Monitoring & alerts](/operations/monitoring-and-alerts/).
 - **Dated expiries** (Tailscale device key, Kubernetes API certificate). See [Recurring tasks](/operations/recurring-tasks/#dated-deadlines).
 - **Config that only exists on the box:** Slate's deploy templates, the tunnel config.

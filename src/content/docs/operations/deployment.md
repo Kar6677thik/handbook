@@ -16,8 +16,9 @@ There is no single deploy pipeline. Each app reaches Megatron in one of five way
 | Sprawl MCP, any new catalog app | Orbit catalog release | a merged spec PR in orbit-cloud | **the owner, from the laptop**. [Catalog apps](/operations/catalog-apps/) |
 | Slate API, web, MCP | CI SSHes into Megatron and runs root-owned scripts | push to `main` of slate.lib (`slate.lib.web` is a folder inside it) | GitHub Actions over Tailscale. [Slate](#slate) below |
 | Sprawl API | CI updates the image with a narrow token | push to `main` of Sprawl (`release.yml`), only when the API image's inputs changed and repo variable `SPRAWL_DEPLOY` is `true` | GitHub Actions over Tailscale. [Sprawl API](#sprawl-api) below |
+| Socrates, Hey Ann | Image built on the PC, imported by hand, manifest applied with the digest pinned | manual | the owner. [Socrates](/services/socrates/#deploy), [Hey Ann](/services/hey-ann/#deploy) |
 | Orbit, Orbit Identity | Image imported by hand, manifest applied by hand | manual | the owner, with sudo. [Orbit](/services/orbit/), [Orbit Identity](/services/orbit-identity/) |
-| AnythingTCG | `deploy/k3s/` in the AnythingTCG repo | manual | owner. TODO: document the steps |
+| AnythingTCG | app files published on the PC and copied to the server, then `deploy/k3s/deploy.sh` | manual | the owner. [AnythingTCG](/services/anythingtcg/#deploy) |
 
 ## Before you deploy
 
@@ -44,6 +45,8 @@ Then load the app's public or tailnet URL. Expected answers:
 | `POST https://lib.karthiksurkanti.in/api/slate/v1/sync` with the headers below | 401 (a bare POST gives 400) |
 | `POST https://mcp.karthiksurkanti.in/mcp` (no auth) | 401 |
 | `POST https://canvas-mcp.karthiksurkanti.in/mcp` (no auth) | 401 with `resource_metadata` |
+| `POST https://socrates-mcp.karthiksurkanti.in/mcp` (no auth) | 401 |
+| `POST https://heyann-mcp.karthiksurkanti.in/mcp` (no auth) | 401 |
 | `https://auth.karthiksurkanti.in/.well-known/oauth-authorization-server` | JSON |
 | `https://orbit.<tailnet>/health/live` (tailnet) | 200 |
 
