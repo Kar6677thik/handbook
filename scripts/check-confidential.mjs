@@ -28,6 +28,8 @@ const RULES = [
 	['host:port', /\b(?=[a-z0-9.-]*[a-z])[a-z0-9.-]+:\d{2,5}\b(?!\/\d)/i],
 	['home directory path', /(?<![\w.])\/home\/[a-z_]/i],
 	['credential/config path', /~\/\.(?:ssh|kube|cloudflared|aws|config\/)|\/etc\/(?:sudoers|rancher|ssh)|\/usr\/local\/(?:sbin|lib)\//],
+	['server filesystem path', /(?<![\w.~$-])\/(?:srv|var\/lib|opt|etc)\//],
+	['systemd unit name', /\b[a-z0-9][a-z0-9_.-]*\.service\b/i],
 	['privileged access config', /\bsudoers\b|NOPASSWD/i],
 	['firewall details', /\b(?:ufw|iptables|nftables)\b/i],
 	['tailnet tag', /\btag:[a-z]/i],

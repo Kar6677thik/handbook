@@ -24,7 +24,7 @@ The board itself has columns from Backlog to Done, WIP limits, swimlanes, a focu
 | Runs on | Megatron, namespace `heyann`, Deployment `heyann` (1 replica, `Recreate`). Not a catalog app: a hand-reviewed namespace |
 | Data | one SQLite database on a volume: cards, undo history, wallet ledger, paired phones, sessions (stored as hashes) |
 | Health | `/health/live`; `/health/ready` (503 if not ready) |
-| Alerts | an uptime probe on the health endpoint is part of the deploy plan; TODO: confirm it alerts |
+| Alerts | monitored every minute; an outage shows as an alert in the Orbit console. Nothing sends a notification yet |
 
 ## Run it locally
 

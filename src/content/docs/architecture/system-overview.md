@@ -70,7 +70,7 @@ Public sites are listed on [DNS, domains & certificates](/infrastructure/dns-dom
 
 - **One machine.** Any hardware fault on Megatron takes down every app.
 - **Backups are partial.** Sprawl, Socrates and Hey Ann have off-host backups; the rest are still being added. See [Backups & restore](/operations/backups-and-restore/).
-- **No monitoring.** Nothing alerts when a site goes down. See [Monitoring & alerts](/operations/monitoring-and-alerts/).
+- **No notifications.** Some sites are probed and outages show in Orbit, but nobody is told. See [Monitoring & alerts](/operations/monitoring-and-alerts/).
 - **Dated expiries** (Tailscale device key, Kubernetes API certificate). See [Recurring tasks](/operations/recurring-tasks/#dated-deadlines).
 - **Config that only exists on the box:** Slate's deploy templates, the tunnel config.
 

@@ -24,7 +24,7 @@ Many question types: multiple choice, cloze, numeric, matching, ordering, writte
 | Runs on | Megatron, namespace `socrates`, Deployment `socrates` (1 replica, `Recreate`). Not a catalog app: a hand-reviewed namespace |
 | Data | one SQLite database and a media folder on a volume |
 | Health | `/health/live`; `/health/ready` (503 if the database check fails) |
-| Alerts | an uptime probe on the health endpoint is part of the deploy plan; TODO: confirm it alerts |
+| Alerts | monitored every minute; an outage shows as an alert in the Orbit console. Nothing sends a notification yet |
 
 ## Run it locally
 

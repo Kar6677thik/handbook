@@ -57,7 +57,7 @@ At startup an init container applies database migrations; the server refuses to 
 
 ## Backups
 
-TODO: none for the k3s setup yet. The repo documents only a Compose-style backup (stop the server, `pg_dump -Fc`, archive the assets volume, keep the pair together). An off-host backup is planned with the platform work; see [Backups & restore](/operations/backups-and-restore/).
+TODO: none for the k3s setup yet; an off-host backup is planned. The repo documents only a Compose-style backup (stop the server, `pg_dump -Fc`, archive the assets volume, keep the pair together). See [Backups & restore](/operations/backups-and-restore/).
 
 ## Gotchas
 

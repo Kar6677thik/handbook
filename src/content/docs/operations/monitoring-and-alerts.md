@@ -6,8 +6,8 @@ sidebar:
   order: 4
 ---
 
-:::caution[Nothing alerts today]
-There is no uptime check, no alerting and no metrics history. If a site goes down, nobody is told. Until that changes, run the manual check below at least daily.
+:::caution[Alerts exist, but nothing notifies you]
+Some sites have uptime probes that check them every minute; an outage shows as a site-down alert in the Orbit console. Orbit only evaluates alerts while it's open, and nothing pushes a notification (no email, phone or chat). Until a notifier exists, open Orbit or run the manual check below at least daily.
 :::
 
 ## Where to look
@@ -17,8 +17,8 @@ There is no uptime check, no alerting and no metrics history. If a site goes dow
 | Cluster overview: workloads, pods, events, current CPU and memory | Orbit console | `https://orbit.<tailnet>` (tailnet; password + code). Read-only, no history |
 | Pods, events, logs | `kubectl` on Megatron | `ssh $MEGATRON`, `export KUBECONFIG=$HOME/.kube/config`, then the commands below |
 | Logs | `kubectl logs` | kept only while the pod exists; nothing is shipped anywhere |
-| Host health | SSH | `df -h / /srv`, `free -m`, `uptime`, `systemctl --failed`, `systemctl --user status cloudflared-main-slate-web.service` |
-| Uptime checks | none | TODO |
+| Host health | SSH | `df -h`, `free -m`, `uptime`, `systemctl --failed`, `systemctl --user status $TUNNEL_SERVICE` |
+| Uptime checks | blackbox probes, every minute | site-down alerts on the Orbit console (Socrates and Hey Ann so far; other sites TODO) |
 | Provider status | | cloudflarestatus.com, status.tailscale.com, githubstatus.com |
 
 ## The manual health check
@@ -41,7 +41,7 @@ ssh $MEGATRON 'export KUBECONFIG=$HOME/.kube/config
   kubectl get pods -A | grep -vE "Running|Completed"      # anything listed is a problem
   kubectl get events -A --field-selector type=Warning --sort-by=.lastTimestamp | tail -20
   kubectl -n orbit-updater get cronjob handbook-updater    # LAST SCHEDULE recent, SUSPEND False
-  df -h / /srv | tail -n +2'                              # alarm above 85% used
+  df -h | tail -n +2'                              # alarm above 85% used
 ```
 
 If anything is wrong: [If something is broken](/start-here/if-something-is-broken/).
@@ -52,7 +52,7 @@ Every alert must have a runbook. An alert nobody knows how to handle just gets i
 
 | Alert | Means | Severity | Goes to | Runbook |
 | --- | --- | --- | --- | --- |
-| none exist yet | | | | |
+| Site down | a probed site failed two checks in a row (about 2 minutes) | critical | the Orbit console only; no notification | [A public site is down](/runbooks/public-site-down/) |
 
 Suggested first alerts (not set up): an external uptime check on the five public URLs above (a free hosted checker works), and disk usage above 85% on Megatron.
 
