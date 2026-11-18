@@ -6,9 +6,11 @@ sidebar:
   order: 5
 ---
 
-:::danger[There are no automatic backups]
-As of 6 Nov 2026 nothing on Megatron is backed up on a schedule: no timers, no cron jobs, no snapshots. If Megatron's disk died today, the data marked **lost** below would be gone.
+:::caution[Backups are only partly in place]
+Since mid-November 2026, Sprawl, Socrates and Hey Ann are backed up off the machine, encrypted, every day. Slate, Orbit Identity, AnythingTCG and the k3s datastore are next. Until they land, the data marked **not backed up** below would be lost with Megatron's disk.
 :::
+
+Where the backups go, their credentials and their exact timing are in the owner's private notes, not here.
 
 A backup you have never restored can't be trusted. Test it on a schedule.
 
@@ -21,6 +23,10 @@ A backup you have never restored can't be trusted. Test it on a schedule.
 | Tunnel config | dated copies on each edit | each change | forever | **same disk**, next to the config | no |
 | Slate templates | dated copies on each edit | each change | forever | **same disk**, next to the templates | no |
 | A one-off pre-install backup (k3s datastore, server token, Slate data and config, per the install record) | 7-Zip archive made by hand | once, 29 Oct 2026 | until deleted | **owner's laptop only** (location in the private notes). Not off-site unless the owner also copied it: TODO confirm | TODO confirm |
+| Sprawl database | daily consistent copy kept on the volume, then shipped off-host with restic | daily | daily, weekly and monthly snapshots | encrypted off-host repository | yes |
+| Socrates database and media | daily verified in-app copy (14 kept), then shipped off-host with restic | daily | daily, weekly and monthly snapshots | encrypted off-host repository | yes |
+| Hey Ann database | daily verified in-app copy (14 kept), then shipped off-host with restic | daily | daily, weekly and monthly snapshots | encrypted off-host repository | yes |
+| Slate notes (Markdown only) | Git commits pushed to the remote | after 30 quiet seconds | forever | the Git remote | depends on the remote |
 | App images | GHCR | every build | per GHCR retention | GitHub | n/a |
 | All code, catalog specs, manifests in repos | git | every commit | forever | GitHub and clones | n/a |
 | These docs | git; every clone is a full copy | every commit | forever | GitHub and laptops | n/a |
@@ -31,10 +37,9 @@ That archive predates Orbit Identity, Sprawl and the handbook, so nothing create
 
 | Data | Where it lives | If lost |
 | --- | --- | --- |
-| Sprawl canvases | a volume on Megatron | **every canvas is gone** |
 | Orbit Identity database (linked apps, consents, audit log) | a volume on Megatron | every AI app has to re-link; audit history gone |
 | AnythingTCG data | volumes on Megatron | gone |
-| Slate notes | Slate's data folder on Megatron | gone, **unless** Slate's git sync pushes them to a remote. TODO: check |
+| Slate attachments and token database | Slate's data folder on Megatron | gone; the notes themselves survive in the Git remote |
 | The k3s datastore | on Megatron | the whole cluster state; rebuild from repos and by hand |
 | Every Kubernetes Secret | in the k3s datastore | recreate each from its source (see [Secrets management](/access/secrets-management/)) |
 | Tunnel credentials and config | on Megatron | recreate the tunnel in Cloudflare and rewrite the rules from the private notes |
@@ -53,12 +58,9 @@ TODO: nothing to restore from yet. Once backups exist, write the exact steps for
 
 **Expected time:** TODO. **Data loss window:** today, everything since the app was installed.
 
-## Proposed first backups
+## Still to come
 
-Not decided yet; listed so the decision is easy to make.
-
-1. A nightly job on Megatron that copies the app volumes, Slate's data, the k3s datastore and the tunnel config into an encrypted archive, then uploads it off the machine (for example Google Drive with rclone). The datastore is k3s's embedded SQLite, not etcd, so `k3s etcd-snapshot` doesn't apply: stop k3s or use `sqlite3 … ".backup …"` for a consistent copy, never copy the live file mid-write. Exact paths go in the private notes.
-2. A monthly restore test (below).
+The platform work is adding the same pattern (an encrypted off-host repository per app) for Slate, Orbit Identity, AnythingTCG and the k3s datastore. Update the tables above as each one lands. For the datastore: it is k3s's embedded SQLite, not etcd, so `k3s etcd-snapshot` doesn't apply; take a consistent copy (stop k3s, or use `sqlite3 … ".backup …"`), never the live file mid-write.
 
 ## Test a restore
 

@@ -54,6 +54,8 @@ Image digests change on every release, so they are not listed here. Read the liv
 | `slate-web` | Slate web (Next.js) | GHCR `slate.lib-web` | public `lib.karthiksurkanti.in` | none |
 | `slate-mcp` | Slate MCP | GHCR `slate.lib-mcp` | public `mcp.karthiksurkanti.in` | none |
 | `anythingtcg` | AnythingTCG server and its Postgres | built on the host | see private notes | volumes |
+| `socrates` | Socrates (UI, API and MCP in one process) | GHCR `socrates`, imported by hand | MCP public at `socrates-mcp.karthiksurkanti.in`; UI private | volume |
+| `heyann` | Hey Ann (board, API and MCP in one process) | GHCR `hey-ann`, imported by hand | MCP public at `heyann-mcp.karthiksurkanti.in`; board private | volume |
 | `apps` | `hello` demo | Docker Hub | none | none. Looks like a leftover; TODO: remove? |
 | `kube-system` | k3s system components | k3s defaults | n/a | n/a |
 
