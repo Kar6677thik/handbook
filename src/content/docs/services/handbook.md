@@ -95,6 +95,6 @@ The orbit-cloud catalog's admission policy rejects pods that break these rules, 
 ## Gotchas
 
 - **Some changes aren't automatic.** Changes to CPU or memory, the port, the health path or the replica count need a PR to `catalog/apps/handbook.yaml` in orbit-cloud and a catalog release. That release reports a field conflict on the image, because the updater owns that field. That's expected.
-- **The tunnel points at a ClusterIP.** The handbook's tunnel rule targets the Service's ClusterIP. If the Service is ever deleted and recreated, the IP changes and the rule must be updated, followed by a restart of the `cloudflared-main-slate-web` user service.
+- **The tunnel points at a ClusterIP.** The handbook's tunnel rule targets the Service's ClusterIP. If the Service is ever deleted and recreated, the IP changes and the rule must be updated, followed by a restart of the tunnel service (`$TUNNEL_SERVICE`).
 - **HTTP isn't redirected to HTTPS.** "Always Use HTTPS" is off for the whole `karthiksurkanti.in` zone in Cloudflare. TODO: decide whether to turn it on.
 - **"Last updated" dates come from git.** The Docker build copies `.git` in, and CI checks out full history (`fetch-depth: 0`). A shallow clone gives every page the same date.

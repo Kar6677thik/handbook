@@ -23,7 +23,7 @@ These break things on a fixed date if nobody acts.
 | Task | How often | Next due | Owner | How |
 | --- | --- | --- | --- | --- |
 | Manual health check | Daily (until monitoring exists) | daily | Kar6677thik | [Monitoring & alerts](/operations/monitoring-and-alerts/#the-manual-health-check) |
-| Check Megatron's disk space (`df -h / /srv`) | Weekly | TODO | Kar6677thik | [Monitoring & alerts](/operations/monitoring-and-alerts/) |
+| Check Megatron's disk space (`df -h`) | Weekly | TODO | Kar6677thik | [Monitoring & alerts](/operations/monitoring-and-alerts/) |
 | Test a backup restore | Monthly, once backups exist | blocked: no backups yet | Kar6677thik | [Backups & restore](/operations/backups-and-restore/#test-a-restore) |
 | Review stale docs (`npm run audit`) | Monthly | TODO | Kar6677thik | [Writing docs](/start-here/writing-docs/) |
 | Review access: SSH keys, Tailscale devices, RBAC bindings | Quarterly | TODO | Kar6677thik | [Access inventory](/access/access-inventory/#access-review) |

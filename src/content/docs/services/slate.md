@@ -23,6 +23,7 @@ Slate is a private knowledge library for one person. Notes are Markdown files ke
 | Repository | [Kar6677thik/slate.lib](https://github.com/Kar6677thik/slate.lib) (API, web in `slate.lib.web/`, MCP in `src/Slate.Lib.Mcp`) |
 | Stack | .NET 10 (API, MCP, MAUI clients), Next.js 16 and React 19 (web) |
 | Runs on | Megatron, namespaces `slate` (API), `slate-web`, `slate-mcp`; one replica each |
+| Reached | web and MCP through the public tunnel; the API only on the tailnet. Nothing is exposed on the local network |
 | Data | a retained volume holding the Git repository of notes, attachments and the token database |
 | Health | API `/health/live` (process) and `/health/ready` (library, token database, writable storage); web `/api/health`; MCP `/health/live` |
 | Logs | `kubectl -n <namespace> logs deploy/<name>` |
@@ -77,7 +78,7 @@ About 50 tools in five groups (read and search, analysis and learning, writes, c
 
 ## Backups
 
-Notes are committed after 30 quiet seconds and pushed to the Git remote, so the notes themselves have an off-site copy. Attachments and the token database don't. TODO: an off-host encrypted backup for Slate is planned; update this once the platform work lands (see [Backups & restore](/operations/backups-and-restore/)).
+Notes are committed after 30 quiet seconds and pushed to the Git remote, so the notes themselves have an off-site copy. Attachments and the token database don't yet: an off-host encrypted backup for Slate is being written. TODO: update this once it lands (see [Backups & restore](/operations/backups-and-restore/)).
 
 ## Gotchas
 
