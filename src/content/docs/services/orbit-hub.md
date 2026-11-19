@@ -11,7 +11,8 @@ sidebar:
 The Hub is one MCP connector in front of my apps. I add it once, sign in once through [Orbit Identity](/services/orbit-identity/), and reach every app it serves, instead of adding and signing in to a separate connector per app.
 
 - **Live:** all four apps sit behind the Hub: [Slate](/services/slate/), [Sprawl](/services/sprawl/), [Socrates](/services/socrates/) and [Hey Ann](/services/hey-ann/). It shows a curated core of tools per app plus discovery tools for the rest, and offers four cross-app prompts (below).
-- **Still to come:** study rewards pushed directly from Socrates to Hey Ann (never relayed by the model), and a public, path-limited route so claude.ai and ChatGPT can use the Hub too.
+- **Study rewards:** studying in Socrates earns screen time in Hey Ann through a direct, signed app-to-app channel. The model never carries an award (below).
+- **Public endpoint:** the Hub also has a public MCP address, `https://hub-mcp.karthiksurkanti.in/mcp`, so claude.ai and ChatGPT can add it as one connector.
 
 Each app's own connector keeps working. The Hub is the main way in; the per-app connectors are the fallback.
 
@@ -25,7 +26,7 @@ Each app's own connector keeps working. The Hub is the main way in; the per-app 
 | Stack | Node with TypeScript and the official MCP SDK, used as both MCP server (to clients) and MCP client (to the apps). It reaches the apps inside the cluster, not over the internet |
 | Runs on | Megatron, its own namespace, one stateless pod; default-deny networking that allows only what it needs |
 | State | none: no volume, nothing to back up. Tool lists are cached in memory |
-| Reached at | tailnet only for now (`https://<hub-url>`, see the private notes) |
+| Reached at | public: `https://hub-mcp.karthiksurkanti.in/mcp` (only `/mcp` and its OAuth metadata are routed; everything else is 404). Also on the tailnet at `https://<hub-url>` (private notes). Sign-in and consent happen only on the tailnet either way |
 | Health | a readiness endpoint, probed every minute; an outage (two failed probes in a row) raises an alert in Orbit |
 
 ## How sign-in works
@@ -61,17 +62,31 @@ Token exchange is switched on for the Hub's client only. It may exchange only Hu
 - **Tool names in instructions and tool descriptions are rewritten** to their Hub names, mechanically: only names written in backticks are changed.
 - **Tool results are never changed.** They contain my own notes and cards, and rewriting them could corrupt data. When a result mentions a tool by its plain name, the Hub's instructions tell the model which prefixed tool that means.
 
+## Study rewards: Socrates to Hey Ann
+
+Studying in Socrates earns minutes in Hey Ann's screen-time wallet. The award never goes through the model, so no prompt can invent or inflate one:
+
+1. Socrates records each study event in its own outbox and sends it to Hey Ann as a **short-lived signed message**, on an internal channel that isn't routed anywhere public.
+2. Hey Ann checks the signature against Socrates' public key and the message's expiry, then applies the event **once per event id**. A repeated or replayed event changes nothing.
+3. Socrates marks an event delivered only when Hey Ann accepts it, and retries otherwise.
+
+Only Socrates can reach that channel, and Socrates itself can reach nothing else. The record of every award is Hey Ann's wallet ledger. To cut the link, remove or rotate Socrates' signing key.
+
 ## Connect a client
 
-Claude Code, on a device on my tailnet:
+Wherever you add it, signing in and consenting happen on Orbit Identity's sign-in page, which only opens on a device on my tailnet. Tick what the Hub may do in each app.
 
-```sh
-claude mcp add -s user --transport http orbit-hub https://<hub-url>
-```
+- **Claude Code:**
 
-Then, in an interactive session, run `/mcp`, pick `orbit-hub` and choose **Authenticate**. The browser opens Orbit Identity's sign-in (tailnet only) and the consent page; tick what the Hub may do in each app. The real URL is in the private notes.
+  ```sh
+  claude mcp add -s user --transport http orbit-hub https://hub-mcp.karthiksurkanti.in/mcp
+  ```
 
-claude.ai, Claude Desktop and ChatGPT can't reach the Hub until the public route lands; use the per-app connectors there for now.
+  Then, in an interactive session, run `/mcp`, pick `orbit-hub` and choose **Authenticate**. On the tailnet, the private address `https://<hub-url>` works too.
+- **claude.ai and Claude Desktop:** Settings → Connectors → Add custom connector, with the URL `https://hub-mcp.karthiksurkanti.in/mcp`. Leave the OAuth client fields empty.
+- **ChatGPT:** Settings → Apps & Connectors → Advanced → Developer mode → Create, with the same URL and OAuth.
+
+The per-app connectors keep working as a fallback.
 
 ## Deploy
 
@@ -83,4 +98,5 @@ The Hub and its Identity changes live in orbit-cloud and are released by the pla
 - **A tool isn't in the list:** it's probably outside the core. Ask the model to find it with `hub_find_tools` and turn it on with `hub_enable`, or call it through `hub_call`.
 - **A new app tool doesn't appear** until the Hub refreshes that app's tool list (it does so when the app announces a change).
 - **Prompts and instructions should write tool names in backticks.** Plain words are never rewritten, so a bare `search` in prose stays as it is.
-- **Claude Code doesn't render MCP Apps** (like Sprawl's diagrams); it shows the text result. claude.ai and Claude Desktop will, once the public route exists.
+- **Diagrams:** claude.ai renders Sprawl's diagrams (an MCP App) through the Hub. Claude Code doesn't render MCP Apps and shows the text result instead.
+- **Verify the public route:** `curl -s -o /dev/null -w '%{http_code}\n' -X POST -H 'content-type: application/json' -d '{}' https://hub-mcp.karthiksurkanti.in/mcp` should print 401, and any other path on that host 404.

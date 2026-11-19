@@ -77,3 +77,4 @@ Environment variables prefixed `SOCRATES_` (public origin, allowed hosts, truste
 - **The pod has no network access.** The embedding model is built into the image and Identity's keys are a mounted file. When Identity's signing key is rotated, refresh that file and restart **before** the new key starts signing.
 - **One writer only:** keep 1 replica and `Recreate`.
 - Without `TZ`, the study day rolls over in UTC.
+- **Studying earns Hey Ann screen time.** Socrates sends each study event to Hey Ann as a signed, short-lived message on an internal channel, which is the only thing it can reach. See [Orbit Hub → Study rewards](/services/orbit-hub/#study-rewards-socrates-to-hey-ann).
