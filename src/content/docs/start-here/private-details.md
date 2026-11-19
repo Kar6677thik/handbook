@@ -18,6 +18,7 @@ Commands in this handbook use placeholders. Set them from the private notes befo
 | --- | --- | --- |
 | `$MEGATRON` | SSH target for the home server (`user@address`) | `export MEGATRON='<from private notes>'` |
 | `<tailnet>` | the tailnet's DNS suffix, in private app URLs such as `https://orbit.<tailnet>` | read it from the notes, or `tailscale status` on a signed-in device |
+| `<hub-url>` | the Orbit Hub's MCP address (tailnet only for now) | from the private notes |
 | `$TUNNEL_CONFIG` | path of the Cloudflare tunnel's config file on Megatron | `export TUNNEL_CONFIG='<from private notes>'` (on Megatron) |
 | `$TUNNEL_SERVICE` | name of the systemd **user** service that runs the tunnel | `export TUNNEL_SERVICE='<from private notes>'` (on Megatron) |
 | `$SLATE_MCP_TEMPLATE`, `$SLATE_WEB_TEMPLATE` | root-owned deploy templates for Slate MCP and Slate web | from the private notes (on Megatron) |

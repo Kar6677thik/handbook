@@ -33,6 +33,7 @@ There is one human operator: the owner (`Kar6677thik`). Everything else listed i
 | `app-deployer` (one per catalog app) | update that app's Deployment and Service; nothing else | minted per release, deleted after | 30 minutes |
 | `handbook-updater` | patch the handbook Deployment only | in-cluster | n/a |
 | Sprawl deployer | update the Sprawl API Deployment only | a GitHub environment secret in the Sprawl repo | **long-lived**; rotation not yet defined |
+| Orbit Hub's client | exchange a user's Hub token for a short-lived, narrower token for one app (token exchange); nothing else | a signing key in a Kubernetes Secret (signed client assertion) | until rotated |
 | `orbit-reader` | read inventory in approved namespaces; no Secrets, logs, exec or writes | in-cluster | n/a |
 | `orbit-release` | update the Orbit Deployment only | minted on demand | short |
 | Slate CI | deploys Slate over Tailscale and SSH | GitHub secrets in slate.lib | until rotated |

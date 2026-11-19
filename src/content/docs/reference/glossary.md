@@ -23,11 +23,13 @@ Add any word a newcomer wouldn't know. Keep the list in alphabetical order.
 | MCP | Model Context Protocol: how AI apps like Claude call tools. Slate MCP and Sprawl MCP are MCP servers. |
 | Megatron | The home server everything runs on. See [Inventory](/infrastructure/inventory/). |
 | Orbit | The private cluster console and app catalog. See [Orbit](/services/orbit/). |
+| Orbit Hub | One MCP connector in front of my apps. See [Orbit Hub](/services/orbit-hub/). |
 | Orbit Identity | The OAuth server for the MCP servers. See [Orbit Identity](/services/orbit-identity/). |
 | PVC | PersistentVolumeClaim: a Kubernetes disk. Here they live on Megatron's one disk (local-path). |
 | RPO | Recovery Point Objective: the most data we can afford to lose. |
 | RTO | Recovery Time Objective: the longest we can afford to be down. |
 | Runbook | A step-by-step procedure for one situation. See [Runbooks](/runbooks/). |
+| Token exchange | OAuth's RFC 8693: swapping one token for another, here a Hub token for a short-lived token for one app with fewer permissions. |
 | Tailnet | The owner's private Tailscale network, `<tailnet>`. |
 | `tailscale serve` | Publishes a service on a tailnet name with automatic HTTPS. Orbit, Identity sign-in and Sprawl are set up this way. |
 | Tunnel | The Cloudflare Tunnel `main`: `cloudflared` on Megatron carries public `*.karthiksurkanti.in` traffic in without opening ports. |
