@@ -27,7 +27,7 @@ Each app's own connector keeps working. The Hub is the main way in; the per-app 
 | Runs on | Megatron, its own namespace, one stateless pod; default-deny networking that allows only what it needs |
 | State | none: no volume, nothing to back up. Tool lists are cached in memory |
 | Reached at | tailnet only for now (`https://<hub-url>`, see the private notes) |
-| Health | a readiness endpoint, probed every minute; an outage shows as an alert in Orbit |
+| Health | a readiness endpoint, probed every minute; an outage (two failed probes in a row) raises an alert in Orbit |
 
 ## How sign-in works
 
