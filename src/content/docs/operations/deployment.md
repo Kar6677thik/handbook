@@ -47,6 +47,7 @@ Then load the app's public or tailnet URL. Expected answers:
 | `POST https://canvas-mcp.karthiksurkanti.in/mcp` (no auth) | 401 with `resource_metadata` |
 | `POST https://socrates-mcp.karthiksurkanti.in/mcp` (no auth) | 401 |
 | `POST https://heyann-mcp.karthiksurkanti.in/mcp` (no auth) | 401 |
+| `POST https://hub-mcp.karthiksurkanti.in/mcp` (no auth) | 401 |
 | `https://auth.karthiksurkanti.in/.well-known/oauth-authorization-server` | JSON |
 | `https://orbit.<tailnet>/health/live` (tailnet) | 200 |
 

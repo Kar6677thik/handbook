@@ -44,6 +44,7 @@ TODO: list any records that are not tunnel CNAMEs (email: MX, SPF, DKIM, DMARC; 
 | `canvas-mcp.karthiksurkanti.in` | Sprawl MCP | only `/mcp` and its metadata endpoint are public |
 | `socrates-mcp.karthiksurkanti.in` | Socrates MCP | only `/mcp` and its metadata endpoint are public |
 | `heyann-mcp.karthiksurkanti.in` | Hey Ann MCP | only `/mcp` and its metadata endpoint are public |
+| `hub-mcp.karthiksurkanti.in` | Orbit Hub | only `/mcp` and its OAuth metadata are public; everything else is 404 |
 
 The tunnel's rules live in a config file on Megatron. Each edit leaves a dated backup beside it. Rules are checked top to bottom, the first match wins, and anything unmatched gets 404.
 

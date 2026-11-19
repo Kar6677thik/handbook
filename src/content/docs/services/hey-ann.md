@@ -79,4 +79,5 @@ Paste the trigger snippet from the repo's `docs/SETUP-CLIENTS.md` into your cust
 - **Ambiguous card references:** Ann changes nothing and asks which card you meant.
 - **Voice mode** is unreliable with custom connectors; type or dictate into the text box instead.
 - **The wallet ledger sits outside board undo,** and wallet rule changes take effect next Monday.
+- **Study minutes come from Socrates directly,** as signed, once-only events on an internal channel; the model never carries them. See [Orbit Hub → Study rewards](/services/orbit-hub/#study-rewards-socrates-to-hey-ann).
 - Same rules as Socrates for Identity key rotation, the import digest and one replica.
