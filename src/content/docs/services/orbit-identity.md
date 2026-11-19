@@ -49,6 +49,15 @@ It is **split-horizon**: the protocol endpoints that apps call are public, but t
 
 Apps identify themselves with a Client ID Metadata Document (an HTTPS URL they host). There is no client secret to manage and Dynamic Client Registration is off.
 
+## Token exchange for the Hub
+
+Identity also serves [Orbit Hub](/services/orbit-hub/), one connector in front of the apps:
+
+- **An aggregate "Orbit Hub" resource.** Its consent page offers every app's permissions, grouped by app. Read and write are pre-ticked; delete and admin never are.
+- **Token exchange (RFC 8693), for the Hub's client only.** The Hub authenticates with a signed client assertion and swaps the user's Hub token for a token addressed to one app. That token lasts 5 minutes at most, carries only the permissions ticked for that app, and has an `act` claim naming the Hub. Exchanges are allowed only for Hub tokens, only for the registered apps, only for the same or fewer permissions, and each one is audited.
+- **Connections store their resource.** Because the Hub's permissions overlap the apps', a connection's resource is recorded on it rather than guessed from its permissions.
+- **Revoking the Hub connection** in Orbit stops new exchanges immediately.
+
 ## Run it locally
 
 TODO: local run steps (see `tests/Orbit.Kubernetes.Integration/identity.ps1` for the disposable-cluster test).

@@ -22,7 +22,7 @@ Addresses, ports and routing details are deliberately not shown here; see [Priva
                │                                              │
 ┌──────────────┴───────────────── Megatron (k3s) ─────────────┴──────────────┐
 │                                                                            │
-│  Public:   book.  → Handbook          Private:  Orbit console              │
+│  Public:   book.  → Handbook          Private:  Orbit console, Orbit Hub   │
 │            lib.   → Slate web                   Orbit Identity sign-in     │
 │            mcp.   → Slate MCP                   Sprawl                     │
 │            auth.  → Orbit Identity              Slate API                  │
@@ -46,7 +46,8 @@ Public sites are listed on [DNS, domains & certificates](/infrastructure/dns-dom
 | Component | What it does | Runs on (namespace) | Code | Docs |
 | --- | --- | --- | --- | --- |
 | Orbit | Private console: read-only view of the cluster, and the app catalog that renders and releases stateless apps | `orbit-system` | orbit-cloud (private repo) | [Orbit](/services/orbit/) |
-| Orbit Identity | OAuth 2.1 server (replaced Auth0) for the Slate, Sprawl, Socrates and Hey Ann MCPs | `identity` | orbit-cloud | [Orbit Identity](/services/orbit-identity/) |
+| Orbit Hub | One MCP connector in front of the apps; exchanges its token for a narrow per-app token at Identity | own namespace | orbit-cloud | [Orbit Hub](/services/orbit-hub/) |
+| Orbit Identity | OAuth 2.1 server (replaced Auth0) for the Slate, Sprawl, Socrates and Hey Ann MCPs, and the Hub's token exchange | `identity` | orbit-cloud | [Orbit Identity](/services/orbit-identity/) |
 | Catalog apps | Stateless apps released through the Orbit catalog: `handbook`, `sprawl-mcp` | `app-<name>` | each app's own repo | [Catalog apps](/operations/catalog-apps/) |
 | Handbook | This site | `app-handbook` | [handbook](https://github.com/Kar6677thik/handbook) | [Handbook](/services/handbook/) |
 | Slate (API, web, MCP) | Markdown library: API, Next.js web UI, MCP server | `slate`, `slate-web`, `slate-mcp` | [slate.lib](https://github.com/Kar6677thik/slate.lib) | [Slate](/services/slate/) |
